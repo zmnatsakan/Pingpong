@@ -6,20 +6,33 @@
 //
 
 import SpriteKit
+import SwiftUI
 
 final class GameScene: SKScene, ObservableObject {
     @Published var score = (0, 0)
+    @Published var isBack: Bool = false
     private var player1 = SKSpriteNode()
     private var player2 = SKSpriteNode()
     private var ball = SKShapeNode()
+    private var button = SKShapeNode()
         
     override init(size: CGSize) {
+        self.isBack = false
         super.init(size: size)
         setupObjects()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        // Check if the location of the touch is within the button's bounds
+        if button.contains(location) {
+            isBack.toggle()
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -54,6 +67,7 @@ final class GameScene: SKScene, ObservableObject {
         removeAllChildren()
         self.createPlayers()
         self.createBall(position: CGPoint(x: size.width / 2, y: size.height / 2))
+        self.button = SKShapeNode(rectOf: CGSize(width: 20, height: 20))
         
         createWalls()
         
@@ -62,6 +76,11 @@ final class GameScene: SKScene, ObservableObject {
         addChild(player1)
         addChild(player2)
         addChild(ball)
+        
+        // Button
+        button.position = CGPoint(x: 20, y: size.height - 20)
+        button.fillColor = .green
+        addChild(button)
     }
     private func addWall(at position: CGPoint) {
         let wallSize = CGSize(width: 1, height: size.height)

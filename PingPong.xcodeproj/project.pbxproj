@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		58045C822ABC8EC30004189E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58045C812ABC8EC30004189E /* MainView.swift */; };
 		5850ED882ABC507300B53627 /* PingPongApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5850ED872ABC507300B53627 /* PingPongApp.swift */; };
 		5850ED8A2ABC507300B53627 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5850ED892ABC507300B53627 /* ContentView.swift */; };
 		5850ED8C2ABC507500B53627 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5850ED8B2ABC507500B53627 /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		58045C812ABC8EC30004189E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		5850ED842ABC507300B53627 /* PingPong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PingPong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5850ED872ABC507300B53627 /* PingPongApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingPongApp.swift; sourceTree = "<group>"; };
 		5850ED892ABC507300B53627 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -36,6 +38,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		58045C7E2ABC8D0B0004189E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5850ED892ABC507300B53627 /* ContentView.swift */,
+				58045C812ABC8EC30004189E /* MainView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		5850ED7B2ABC507300B53627 = {
 			isa = PBXGroup;
 			children = (
@@ -55,9 +66,9 @@
 		5850ED862ABC507300B53627 /* PingPong */ = {
 			isa = PBXGroup;
 			children = (
+				58045C7E2ABC8D0B0004189E /* Views */,
 				5865BAFA2ABC6D6700B76776 /* Extensions */,
 				5850ED872ABC507300B53627 /* PingPongApp.swift */,
-				5850ED892ABC507300B53627 /* ContentView.swift */,
 				5850ED8B2ABC507500B53627 /* Assets.xcassets */,
 				5850ED8D2ABC507500B53627 /* Preview Content */,
 				5865BAFD2ABC6F3600B76776 /* GameScene.swift */,
@@ -154,6 +165,7 @@
 				5850ED8A2ABC507300B53627 /* ContentView.swift in Sources */,
 				5865BAFC2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift in Sources */,
 				5865BAFE2ABC6F3600B76776 /* GameScene.swift in Sources */,
+				58045C822ABC8EC30004189E /* MainView.swift in Sources */,
 				5850ED882ABC507300B53627 /* PingPongApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
