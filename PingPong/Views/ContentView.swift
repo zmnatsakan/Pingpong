@@ -34,12 +34,10 @@ struct ContentView: View {
                 .font(.system(size: 60).weight(.bold))
                 .monospaced()
                 .animation(.easeInOut, value: gameScene.score.0 + gameScene.score.1)
-            }
-            .onChange(of: gameScene.isBack) { _ in
-                print("Tapped")
-                isGame = false
-                
             } //ZSTACK
+            .onChange(of: gameScene.isBack) { _ in
+                isGame = false
+            }
     }
 }
 
