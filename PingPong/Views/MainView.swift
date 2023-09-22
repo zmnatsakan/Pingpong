@@ -9,15 +9,18 @@ import SwiftUI
 
 struct MainView: View {
     @State var isGame = false
+    @ObservedObject var gameScene = GameScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
     
     var body: some View {
         ZStack {
             if isGame {
-                ContentView(isGame: $isGame)
+                ContentView(gameScene: gameScene, isGame: $isGame)
             } else {
                 Button("PLAY") {
+                    gameScene.reloadScene()
                     isGame = true
                 }
+                .buttonStyle(.borderedProminent)
             }
         }
     }
