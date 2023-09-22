@@ -9,8 +9,8 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
+    @ObservedObject var gameScene: GameScene = GameScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
     @Binding var isGame: Bool
-    @StateObject var gameScene = GameScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.width))
     var scene: SKScene  {
         let scene = gameScene
         scene.scaleMode = .aspectFit
@@ -25,21 +25,22 @@ struct ContentView: View {
                 SpriteView(scene: scene)
                 
                 VStack {
-                    Text("\(gameScene.score.1)")
-                        .foregroundColor(.white)
-                    Spacer()
                     Text("\(gameScene.score.0)")
                         .foregroundColor(.white)
+                    Spacer()
+                    Text("\(gameScene.score.1)")
+                        .foregroundColor(.white)
+                        .onTapGesture {
+                            gameScene.reloadScene()
+                        }
                 }
                 .font(.system(size: 60).weight(.bold))
                 .monospaced()
                 .animation(.easeInOut, value: gameScene.score.0 + gameScene.score.1)
-            }
-            .onChange(of: gameScene.isBack) { _ in
-                print("Tapped")
-                isGame = false
-                
             } //ZSTACK
+            .onChange(of: gameScene.isBack) { _ in
+                isGame = false
+            }
     }
 }
 
