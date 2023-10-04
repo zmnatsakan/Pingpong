@@ -12,6 +12,9 @@
 		5850ED8A2ABC507300B53627 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5850ED892ABC507300B53627 /* ContentView.swift */; };
 		5850ED8C2ABC507500B53627 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5850ED8B2ABC507500B53627 /* Assets.xcassets */; };
 		5850ED8F2ABC507500B53627 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5850ED8E2ABC507500B53627 /* Preview Assets.xcassets */; };
+		5862A2162ACD7208005A9720 /* CGVectorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5862A2132ACD7208005A9720 /* CGVectorExtensions.swift */; };
+		5862A2172ACD7208005A9720 /* CGExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5862A2142ACD7208005A9720 /* CGExtensions.swift */; };
+		5862A2182ACD7208005A9720 /* CGPointExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5862A2152ACD7208005A9720 /* CGPointExtensions.swift */; };
 		5865BAFC2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5865BAFB2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift */; };
 		5865BAFE2ABC6F3600B76776 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5865BAFD2ABC6F3600B76776 /* GameScene.swift */; };
 /* End PBXBuildFile section */
@@ -23,6 +26,9 @@
 		5850ED892ABC507300B53627 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		5850ED8B2ABC507500B53627 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5850ED8E2ABC507500B53627 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		5862A2132ACD7208005A9720 /* CGVectorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGVectorExtensions.swift; sourceTree = "<group>"; };
+		5862A2142ACD7208005A9720 /* CGExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGExtensions.swift; sourceTree = "<group>"; };
+		5862A2152ACD7208005A9720 /* CGPointExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPointExtensions.swift; sourceTree = "<group>"; };
 		5865BAFB2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPhysicsBodyExtension.swift; sourceTree = "<group>"; };
 		5865BAFD2ABC6F3600B76776 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -87,6 +93,9 @@
 		5865BAFA2ABC6D6700B76776 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				5862A2142ACD7208005A9720 /* CGExtensions.swift */,
+				5862A2152ACD7208005A9720 /* CGPointExtensions.swift */,
+				5862A2132ACD7208005A9720 /* CGVectorExtensions.swift */,
 				5865BAFB2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift */,
 			);
 			path = Extensions;
@@ -164,8 +173,11 @@
 			files = (
 				5850ED8A2ABC507300B53627 /* ContentView.swift in Sources */,
 				5865BAFC2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift in Sources */,
+				5862A2162ACD7208005A9720 /* CGVectorExtensions.swift in Sources */,
 				5865BAFE2ABC6F3600B76776 /* GameScene.swift in Sources */,
 				58045C822ABC8EC30004189E /* MainView.swift in Sources */,
+				5862A2172ACD7208005A9720 /* CGExtensions.swift in Sources */,
+				5862A2182ACD7208005A9720 /* CGPointExtensions.swift in Sources */,
 				5850ED882ABC507300B53627 /* PingPongApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -25,10 +25,10 @@ struct ContentView: View {
                 SpriteView(scene: scene)
                 
                 VStack {
-                    Text("\(gameScene.score.0)")
+                    Text("\(gameScene.score.1)")
                         .foregroundColor(.white)
                     Spacer()
-                    Text("\(gameScene.score.1)")
+                    Text("\(gameScene.score.0)")
                         .foregroundColor(.white)
                         .onTapGesture {
                             gameScene.reloadScene()
