@@ -98,4 +98,9 @@ extension CGFloat
     {
         return a.0 * pow(CGFloat(M_E), a.1 * self)
     }
+    
+    public func clamped(to range: ClosedRange<CGFloat>) -> CGFloat {
+        return Swift.min(Swift.max(self, range.lowerBound), range.upperBound)
+    }
+    
 }

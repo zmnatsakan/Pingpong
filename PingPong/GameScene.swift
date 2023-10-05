@@ -8,6 +8,31 @@
 import SpriteKit
 import SwiftUI
 
+enum BitMask: UInt32 {
+    case ball = 1
+    case detector = 2
+    case player = 4
+    case wall = 8
+}
+
+enum ContactType {
+    case ballWithBoost
+    case ballWithPlayer
+    case none
+    
+    init(contact: SKPhysicsContact) {
+        if (contact.bodyA.categoryBitMask == BitMask.ball.rawValue && contact.bodyB.categoryBitMask == BitMask.detector.rawValue) ||
+           (contact.bodyA.categoryBitMask == BitMask.detector.rawValue && contact.bodyB.categoryBitMask == BitMask.ball.rawValue) {
+            self = .ballWithBoost
+        } else if (contact.bodyA.categoryBitMask == BitMask.ball.rawValue && contact.bodyB.categoryBitMask == BitMask.player.rawValue) ||
+                  (contact.bodyA.categoryBitMask == BitMask.player.rawValue && contact.bodyB.categoryBitMask == BitMask.ball.rawValue) {
+            self = .ballWithPlayer
+        } else {
+            self = .none
+        }
+    }
+}
+
 /// The main game scene class responsible for managing gameplay.
 final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
@@ -38,20 +63,19 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     var timeLeft: Int = 99 {
         didSet {
-            timerNode.text = "Time Left: " + (timeLeft < 10 ? "0" : "") + "\(timeLeft)"
+            timerNode.text = "Time Left: \(timeLeft < 10 ? "0" : "")\(timeLeft)"
         }
     }
     
     var hitCount: Int = 0 {
         didSet {
-            hitCountNode.text = "Hits: " + (hitCount < 10 ? "0" : "") + "\(hitCount)"
+            hitCountNode.text = "Hits: \(hitCount < 10 ? "0" : "")\(hitCount)"
         }
     }
     
     // MARK: - Initialization
     
     override init(size: CGSize) {
-        self.isBack = false
         super.init(size: size)
         setupObjects()
     }
@@ -63,7 +87,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     // MARK: - Scene Setup
     
     override func didMove(to view: SKView) {
-        self.physicsWorld.contactDelegate = self
+        physicsWorld.contactDelegate = self
         run(SKAction.repeatForever(SKAction.sequence([SKAction.run(countdown), SKAction.wait(forDuration: 1)])))
     }
     
@@ -71,28 +95,21 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        let location = touch.location(in: self)
-        
-        // Check if the touch is within the button's bounds
-        if button.contains(location) {
+        if button.contains(touch.location(in: self)) {
             isBack.toggle()
         }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard !touches.isEmpty else { return }
-        
         for touch in touches {
-            let isTouchBelowCenter = touch.location(in: self).y < size.height / 2
-            let player = isTouchBelowCenter ? player1 : player2
-            
             let touchLocation = touch.location(in: self)
+            let player = touchLocation.y < size.height / 2 ? player1 : player2
             let playerWidth = player1.size.width
             let minX = playerWidth / 2 + 5
             let maxX = size.width - playerWidth / 2 - 5
             
             guard minX < touchLocation.x && touchLocation.x < maxX else { return }
-            
             player.position.x = touchLocation.x
         }
     }
@@ -106,7 +123,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         if player1Win || player2Win {
             ball.run(SKAction.fadeOut(withDuration: 0.5))
             ball.removeFromParent()
-            createBall(position: CGPoint(x: size.width / 2, y: size.height / 2))
+            createBall(at: CGPoint(x: size.width / 2, y: size.height / 2))
             addChild(ball)
             
             if player1Win {
@@ -118,21 +135,12 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        // Calculate the paddle's new position based on the ball's position
-        var targetX = ball.position.x
-        
-        // Constrain the targetX to stay within the screen bounds considering the paddle's width
         let halfPaddleWidth = player2.size.width / 2
-        targetX = max(targetX, halfPaddleWidth)
-        targetX = min(targetX, size.width - halfPaddleWidth)
+        var targetX = ball.position.x.clamped(to: halfPaddleWidth...(size.width - halfPaddleWidth))
         
-        // Calculate the difference between the current and target positions
         let deltaX = targetX - player2.position.x
-        
-        // Calculate the time needed to reach the target position with the given speed
         let timeToReachTarget = abs(deltaX) / 350
         
-        // Move the paddle toward the target position
         let moveAction = SKAction.moveTo(x: targetX, duration: TimeInterval(timeToReachTarget))
         player2.run(moveAction)
     }
@@ -143,44 +151,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     var isHit = false
     
     func didBegin(_ contact: SKPhysicsContact) {
-        if !isBoost &&
-            (contact.bodyA.node?.name == "boost" && contact.bodyB.node?.name == "ball" ||
-           contact.bodyA.node?.name == "ball" && contact.bodyB.node?.name == "boost") {
-            
-            if let physicsBody = ball.physicsBody {
-                
-                
-                physicsBody.velocity += physicsBody.velocity.normalized * 150.0
-                
-//                physicsBody.velocity.dx += physicsBody.velocity.dx > 0 ? 150 : -150
-//                physicsBody.velocity.dy += physicsBody.velocity.dy > 0 ? 150 : -150
-                
-                isBoost = true
-            }
-        }
-        
-        if !isHit &&
-            (contact.bodyA.node?.physicsBody?.categoryBitMask == playerCategory &&
-            contact.bodyB.node?.name == "ball") {
-            hitCount += 1
-            isHit = true
-        }
-    }
-    
-    func didEnd(_ contact: SKPhysicsContact) {
-        if contact.bodyA.node?.name == "boost" && contact.bodyB.node?.name == "ball" ||
-           contact.bodyA.node?.name == "ball" && contact.bodyB.node?.name == "boost" {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.isBoost = false
-            }
-        }
-        
-        if contact.bodyA.node?.physicsBody?.categoryBitMask == playerCategory &&
-            contact.bodyB.node?.name == "ball" {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.isHit = false
-            }
-        }
+        handleContact(contact)
     }
     
     // MARK: - Game Restart
@@ -201,20 +172,22 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     private func setupObjects() {
         removeAllChildren()
+        
         createPlayers()
-        createBall(position: CGPoint(x: size.width / 2, y: size.height / 2))
-        button = SKSpriteNode(texture: SKTexture(imageNamed: "back"), size: CGSize(width: 50, height: 50))
+        createBall(at: CGPoint(x: size.width / 2, y: size.height / 2))
         createWalls()
         createTimer(seconds: 99)
         createHitCount()
-        createDetector("boost", at: CGPoint(x: size.width / 2, y: size.height / 2), size: CGSize(width: 100, height: 100))
-        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        createDetector(named: "boost", at: CGPoint(x: size.width / 2, y: size.height / 2), size: CGSize(width: 100, height: 100))
+        physicsWorld.gravity = .zero
+        
+        // Setting up button
+        button = SKSpriteNode(texture: SKTexture(imageNamed: "back"), size: CGSize(width: 50, height: 50))
+        button.position = CGPoint(x: 60, y: size.height - 60)
+        
         addChild(player1)
         addChild(player2)
         addChild(ball)
-        
-        // Button
-        button.position = CGPoint(x: 60, y: size.height - 60)
         addChild(button)
     }
     
@@ -248,7 +221,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         addChild(obstacle)
     }
     
-    private func createDetector(_ name: String, at position: CGPoint, size: CGSize) {
+    private func createDetector(named name: String, at position: CGPoint, size: CGSize) {
         let detector = SKShapeNode(rectOf: size)
         detector.physicsBody = SKPhysicsBody(rectangleOf: size).ideal().manualMovement()
         detector.position = position
@@ -291,7 +264,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         return player
     }
     
-    private func createBall(position: CGPoint) {
+    private func createBall(at position: CGPoint) {
         let size = CGSize(width: 40, height: 40)
         let imageName = images.randomElement() ?? "apple"
         
@@ -311,5 +284,61 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         let action = SKAction.fadeIn(withDuration: 0.5)
         ball.run(action)
         self.ball = ball
+    }
+    
+    // MARK: - Helper Methods for Object Creation and Handling
+    
+    private func handleBoost() {
+        guard !isBoost else { return }
+        
+        if let physicsBody = ball.physicsBody {
+            physicsBody.velocity += physicsBody.velocity.normalized * 150.0
+            isBoost = true
+        }
+        
+        let wait = SKAction.wait(forDuration: 0.2)  // Adjust the duration as needed
+        let completion = SKAction.run {
+            self.handleBoostEnd()
+        }
+        let sequence = SKAction.sequence([wait, completion])
+        run(sequence, withKey: "boostEndSequence")
+    }
+    
+    private func handleHit() {
+        guard !isHit else { return }
+        
+        hitCount += 1
+        isHit = true
+        
+        let wait = SKAction.wait(forDuration: 0.2)  // Adjust the duration as needed
+        let completion = SKAction.run {
+            self.handleHitEnd()
+        }
+        let sequence = SKAction.sequence([wait, completion])
+        run(sequence, withKey: "hitEndSequence")
+    }
+    
+    private func handleBoostEnd() {
+        if isBoost {
+            isBoost = false
+        }
+    }
+    
+    private func handleHitEnd() {
+        if isHit {
+            // Implement any additional behavior here if required.
+            isHit = false
+        }
+    }
+    
+    func handleContact(_ contact: SKPhysicsContact) {
+        switch ContactType(contact: contact) {
+        case .ballWithBoost:
+            handleBoost()
+        case .ballWithPlayer:
+            handleHit()
+        case .none:
+            break
+        }
     }
 }
