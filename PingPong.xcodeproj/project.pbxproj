@@ -17,6 +17,10 @@
 		5862A2182ACD7208005A9720 /* CGPointExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5862A2152ACD7208005A9720 /* CGPointExtensions.swift */; };
 		5865BAFC2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5865BAFB2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift */; };
 		5865BAFE2ABC6F3600B76776 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5865BAFD2ABC6F3600B76776 /* GameScene.swift */; };
+		58F53EEE2AD02D9C00F12D7B /* LevelConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F53EED2AD02D9C00F12D7B /* LevelConfig.swift */; };
+		58F53EF12AD02E0F00F12D7B /* GameConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F53EF02AD02E0F00F12D7B /* GameConfiguration.swift */; };
+		58F53EF42AD02E4F00F12D7B /* ContactType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F53EF32AD02E4F00F12D7B /* ContactType.swift */; };
+		58F53EF62AD02E8900F12D7B /* BitMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F53EF52AD02E8900F12D7B /* BitMask.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +35,10 @@
 		5862A2152ACD7208005A9720 /* CGPointExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPointExtensions.swift; sourceTree = "<group>"; };
 		5865BAFB2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPhysicsBodyExtension.swift; sourceTree = "<group>"; };
 		5865BAFD2ABC6F3600B76776 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		58F53EED2AD02D9C00F12D7B /* LevelConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelConfig.swift; sourceTree = "<group>"; };
+		58F53EF02AD02E0F00F12D7B /* GameConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfiguration.swift; sourceTree = "<group>"; };
+		58F53EF32AD02E4F00F12D7B /* ContactType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactType.swift; sourceTree = "<group>"; };
+		58F53EF52AD02E8900F12D7B /* BitMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitMask.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,12 +80,15 @@
 		5850ED862ABC507300B53627 /* PingPong */ = {
 			isa = PBXGroup;
 			children = (
+				58F53EF22AD02E4300F12D7B /* Enums */,
+				58F53EEF2AD02E0000F12D7B /* Model */,
 				58045C7E2ABC8D0B0004189E /* Views */,
 				5865BAFA2ABC6D6700B76776 /* Extensions */,
 				5850ED872ABC507300B53627 /* PingPongApp.swift */,
 				5850ED8B2ABC507500B53627 /* Assets.xcassets */,
 				5850ED8D2ABC507500B53627 /* Preview Content */,
 				5865BAFD2ABC6F3600B76776 /* GameScene.swift */,
+				58F53EED2AD02D9C00F12D7B /* LevelConfig.swift */,
 			);
 			path = PingPong;
 			sourceTree = "<group>";
@@ -99,6 +110,23 @@
 				5865BAFB2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		58F53EEF2AD02E0000F12D7B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				58F53EF02AD02E0F00F12D7B /* GameConfiguration.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		58F53EF22AD02E4300F12D7B /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				58F53EF32AD02E4F00F12D7B /* ContactType.swift */,
+				58F53EF52AD02E8900F12D7B /* BitMask.swift */,
+			);
+			path = Enums;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,10 +202,14 @@
 				5850ED8A2ABC507300B53627 /* ContentView.swift in Sources */,
 				5865BAFC2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift in Sources */,
 				5862A2162ACD7208005A9720 /* CGVectorExtensions.swift in Sources */,
+				58F53EF62AD02E8900F12D7B /* BitMask.swift in Sources */,
 				5865BAFE2ABC6F3600B76776 /* GameScene.swift in Sources */,
 				58045C822ABC8EC30004189E /* MainView.swift in Sources */,
+				58F53EEE2AD02D9C00F12D7B /* LevelConfig.swift in Sources */,
 				5862A2172ACD7208005A9720 /* CGExtensions.swift in Sources */,
+				58F53EF42AD02E4F00F12D7B /* ContactType.swift in Sources */,
 				5862A2182ACD7208005A9720 /* CGPointExtensions.swift in Sources */,
+				58F53EF12AD02E0F00F12D7B /* GameConfiguration.swift in Sources */,
 				5850ED882ABC507300B53627 /* PingPongApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

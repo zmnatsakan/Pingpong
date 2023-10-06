@@ -8,32 +8,6 @@
 import SpriteKit
 import SwiftUI
 
-enum BitMask: UInt32 {
-    case ball = 1
-    case detector = 2
-    case player = 4
-    case wall = 8
-}
-
-enum ContactType {
-    case ballWithBoost
-    case ballWithPlayer
-    case none
-    
-    init(contact: SKPhysicsContact) {
-        if (contact.bodyA.categoryBitMask == BitMask.ball.rawValue && contact.bodyB.categoryBitMask == BitMask.detector.rawValue) ||
-           (contact.bodyA.categoryBitMask == BitMask.detector.rawValue && contact.bodyB.categoryBitMask == BitMask.ball.rawValue) {
-            self = .ballWithBoost
-        } else if (contact.bodyA.categoryBitMask == BitMask.ball.rawValue && contact.bodyB.categoryBitMask == BitMask.player.rawValue) ||
-                  (contact.bodyA.categoryBitMask == BitMask.player.rawValue && contact.bodyB.categoryBitMask == BitMask.ball.rawValue) {
-            self = .ballWithPlayer
-        } else {
-            self = .none
-        }
-    }
-}
-
-/// The main game scene class responsible for managing gameplay.
 final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     // MARK: - Published Properties
@@ -61,6 +35,12 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     private var detectors = [SKShapeNode]()
     
+    var configuration: GameConfiguration?
+    
+    var center: CGPoint {
+        return CGPoint(x: frame.width / 2, y: frame.height / 2)
+    }
+    
     var timeLeft: Int = 99 {
         didSet {
             timerNode.text = "Time Left: \(timeLeft < 10 ? "0" : "")\(timeLeft)"
@@ -74,6 +54,12 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     }
     
     // MARK: - Initialization
+    
+    init(size: CGSize, configuration: GameConfiguration) {
+        self.configuration = configuration
+        super.init(size: size)
+        setupObjects()
+    }
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -136,7 +122,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     override func update(_ currentTime: TimeInterval) {
         let halfPaddleWidth = player2.size.width / 2
-        var targetX = ball.position.x.clamped(to: halfPaddleWidth...(size.width - halfPaddleWidth))
+        let targetX = ball.position.x.clamped(to: halfPaddleWidth...(size.width - halfPaddleWidth))
         
         let deltaX = targetX - player2.position.x
         let timeToReachTarget = abs(deltaX) / 350
@@ -173,13 +159,33 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private func setupObjects() {
         removeAllChildren()
         
-        createPlayers()
-        createBall(at: CGPoint(x: size.width / 2, y: size.height / 2))
-        createWalls()
-        createTimer(seconds: 99)
-        createHitCount()
-        createDetector(named: "boost", at: CGPoint(x: size.width / 2, y: size.height / 2), size: CGSize(width: 100, height: 100))
         physicsWorld.gravity = .zero
+        
+        createPlayers()
+        
+        // Create ball always
+        createBall(at: CGPoint(x: player1.position.x, y: size.height / 2 - 200))
+        
+        if let config = configuration {
+            if let time = config.time {
+                createTimer(seconds: time)
+            }
+            
+            if config.hasObstacles {
+                createObstacles()
+            }
+            
+            if config.hasBoostFields {
+                createBoostFields()
+            }
+            
+            if let hitTarget = config.hitTarget {
+                createHitCount(target: hitTarget)
+            }
+        }
+        
+        createPlayers()
+        createWalls()
         
         // Setting up button
         button = SKSpriteNode(texture: SKTexture(imageNamed: "back"), size: CGSize(width: 50, height: 50))
@@ -191,7 +197,16 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         addChild(button)
     }
     
-    private func createHitCount() {
+    
+    private func createObstacles() {
+        createObstacle(at: center, offset: 100)
+    }
+    
+    private func createBoostFields() {
+        createDetector(named: "boost", at: CGPoint(x: size.width / 2, y: size.height / 2), size: CGSize(width: 100, height: 100))
+    }
+    
+    private func createHitCount(target: Int) {
         hitCountNode.position = CGPoint(x: frame.width, y: frame.height - 100)
         hitCount = 0
         hitCountNode.fontColor = .white
@@ -271,8 +286,9 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         let ball = SKSpriteNode(imageNamed: imageName)
         ball.size = size
         ball.position = position
-        ball.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: imageName), size: size).ideal()
-        ball.physicsBody?.velocity = CGVector(dx: 100, dy: -100)
+        //        ball.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: imageName), size: size).ideal()
+        ball.physicsBody = SKPhysicsBody(circleOfRadius: 20).ideal()
+        ball.physicsBody?.velocity = CGVector(dx: 20, dy: -250)
         ball.physicsBody?.angularVelocity = 5
         ball.physicsBody?.angularDamping = 1
         ball.physicsBody?.categoryBitMask = ballCategory

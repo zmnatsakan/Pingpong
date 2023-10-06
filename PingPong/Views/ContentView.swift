@@ -19,28 +19,28 @@ struct ContentView: View {
     }
     
     var body: some View {
-            ZStack {
-                Color.black
-                    .ignoresSafeArea()
-                SpriteView(scene: scene)
-                
-                VStack {
-                    Text("\(gameScene.score.1)")
-                        .foregroundColor(.white)
-                    Spacer()
-                    Text("\(gameScene.score.0)")
-                        .foregroundColor(.white)
-                        .onTapGesture {
-                            gameScene.reloadScene()
-                        }
-                }
-                .font(.system(size: 60).weight(.bold))
-                .monospaced()
-                .animation(.easeInOut, value: gameScene.score.0 + gameScene.score.1)
-            } //ZSTACK
-            .onChange(of: gameScene.isBack) { _ in
-                isGame = false
+        ZStack {
+            Color.black
+                .ignoresSafeArea()
+            SpriteView(scene: scene)
+            
+            VStack {
+                Text("\(gameScene.score.1)")
+                    .foregroundColor(.white)
+                Spacer()
+                Text("\(gameScene.score.0)")
+                    .foregroundColor(.white)
+                    .onTapGesture {
+                        gameScene.reloadScene()
+                    }
             }
+            .font(.system(size: 60).weight(.bold))
+            .monospaced()
+            .animation(.easeInOut, value: gameScene.score.0 + gameScene.score.1)
+        } //ZSTACK
+        .onChange(of: gameScene.isBack) { _ in
+            isGame = false
+        }
     }
 }
 
