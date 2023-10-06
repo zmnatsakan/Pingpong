@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @State var isGame = false
+    @State var currentLevel = 0
     @ObservedObject var gameScene = GameScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
     
     
@@ -17,13 +18,23 @@ struct MainView: View {
             if isGame {
                 ContentView(gameScene: GameScene(size: CGSize(width: UIScreen.main.bounds.size.width,
                                                               height: UIScreen.main.bounds.size.height),
-                                                 configuration: LevelConfig.levels.randomElement()!), isGame: $isGame)
+                                                 configuration: LevelConfig.levels[currentLevel]), isGame: $isGame)
             } else {
-                Button("PLAY") {
-                    gameScene.reloadScene()
-                    isGame.toggle()
+                VStack {
+                    ForEach(0..<LevelConfig.levels.count, id: \.self) { index in
+                        Button {
+                            currentLevel = index
+                            gameScene.reloadScene()
+                            isGame.toggle()
+                        } label: {
+                            Text("Level \(index + 1)")
+                                .font(.title)
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .padding(.horizontal)
+                    }
                 }
-                .buttonStyle(.borderedProminent)
             }
         }
     }
