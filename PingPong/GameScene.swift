@@ -26,7 +26,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private let images = ["apple", "apple-core", "banana", "watermelon", "avocado"]
     
     private let ballCategory: UInt32 = 1
-    private let detectorCategory: UInt32 = 2
+    private let boostCategory: UInt32 = 2
     private let playerCategory: UInt32 = 4
     private let wallCategory: UInt32 = 8
     
@@ -167,43 +167,43 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         createBall(at: CGPoint(x: player1.position.x, y: size.height / 2 - 200))
         
         if let config = configuration {
-            if let time = config.time {
-                createTimer(seconds: time)
-            }
+            if let time = config.time { createTimer(seconds: time) }
+            if let hitTarget = config.hitTarget { createHitCount(target: hitTarget) }
             
-            if config.hasObstacles {
-                createObstacles()
-            }
-            
-            if config.hasBoostFields {
-                createBoostFields()
-            }
-            
-            if let hitTarget = config.hitTarget {
-                createHitCount(target: hitTarget)
-            }
+            if !config.obstacles.isEmpty { createObstacles(config.obstacles) }
+            if !config.boosts.isEmpty { createBoostFields(config.boosts) }
         }
         
-        createPlayers()
         createWalls()
+        createBackButton()
         
-        // Setting up button
-        button = SKSpriteNode(texture: SKTexture(imageNamed: "back"), size: CGSize(width: 50, height: 50))
-        button.position = CGPoint(x: 60, y: size.height - 60)
         
         addChild(player1)
         addChild(player2)
         addChild(ball)
+    }
+    
+    private func createBackButton() {
+        button = SKSpriteNode(texture: SKTexture(imageNamed: "back"), size: CGSize(width: 50, height: 50))
+        button.position = CGPoint(x: 60, y: size.height - 60)
         addChild(button)
     }
     
-    
-    private func createObstacles() {
-        createObstacle(at: center, offset: 100)
+    private func createObstacles(_ obstacles: [Obstacle]) {
+        for obstacle in obstacles {
+            createObstacle(type: obstacle.type,
+                           at: obstacle.position,
+                           offset: obstacle.offset,
+                           size: obstacle.size)
+        }
     }
     
-    private func createBoostFields() {
-        createDetector(named: "boost", at: CGPoint(x: size.width / 2, y: size.height / 2), size: CGSize(width: 100, height: 100))
+    private func createBoostFields(_ boosts: [Boost]) {
+        for boost in boosts {
+            createBoostField(type: boost.type,
+                             at: boost.position,
+                             size: boost.size)
+        }
     }
     
     private func createHitCount(target: Int) {
@@ -222,10 +222,16 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         addChild(timerNode)
     }
     
-    private func createObstacle(at position: CGPoint, offset: CGFloat) {
-        let obstacle = SKShapeNode(rectOf: CGSize(width: 20, height: 50))
-        let startPosition = CGPoint(x: position.x - offset, y: position.y)
-        let endPosition = CGPoint(x: position.x + offset, y: position.y)
+    private func createObstacle(type: ObstacleType = .horizontal, at positionName: Position, offset: CGFloat, size: CGSize) {
+        
+        let position = getPosition(positionName, size: size)
+        let obstacle = SKShapeNode(rectOf: size)
+        
+        let xOffset = type == .horizontal ? offset : 0
+        let yOffset = type == .vertical ? offset : 0
+        
+        let startPosition = CGPoint(x: position.x - xOffset, y: position.y - yOffset)
+        let endPosition = CGPoint(x: position.x + xOffset, y: position.y + yOffset)
         
         obstacle.position = startPosition
         obstacle.fillColor = .red
@@ -236,16 +242,17 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         addChild(obstacle)
     }
     
-    private func createDetector(named name: String, at position: CGPoint, size: CGSize) {
-        let detector = SKShapeNode(rectOf: size)
-        detector.physicsBody = SKPhysicsBody(rectangleOf: size).ideal().manualMovement()
-        detector.position = position
-        detector.strokeColor = .green
-        detector.physicsBody?.categoryBitMask = detectorCategory
-        detector.physicsBody?.contactTestBitMask = ballCategory
-        detector.physicsBody?.collisionBitMask = 0
-        detector.name = name
-        addChild(detector)
+    private func createBoostField(type: BoostType = .boost, at positionName: Position, size: CGSize) {
+        let position = getPosition(positionName, size: size)
+        let boost = SKShapeNode(rectOf: size)
+        boost.physicsBody = SKPhysicsBody(rectangleOf: size).ideal().manualMovement()
+        boost.position = position
+        boost.strokeColor = .green
+        boost.physicsBody?.categoryBitMask = boostCategory
+        boost.physicsBody?.contactTestBitMask = ballCategory
+        boost.physicsBody?.collisionBitMask = 0
+        boost.name = "boost"
+        addChild(boost)
     }
     
     private func addWall(at position: CGPoint) {
@@ -347,7 +354,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         }
     }
     
-    func handleContact(_ contact: SKPhysicsContact) {
+    private func handleContact(_ contact: SKPhysicsContact) {
         switch ContactType(contact: contact) {
         case .ballWithBoost:
             handleBoost()
@@ -355,6 +362,37 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
             handleHit()
         case .none:
             break
+        }
+    }
+    
+    private func getPosition(_ name: Position, size: CGSize) -> CGPoint {
+        switch name {
+        case .center:
+            return center
+        case .left:
+            return CGPoint(x: size.width / 2,
+                           y: center.y)
+        case .right:
+            return CGPoint(x: frame.width - size.width / 2,
+                           y: center.y)
+        case .top:
+            return CGPoint(x: center.x,
+                           y: player2.position.y - size.height / 2)
+        case .bottom:
+            return CGPoint(x: center.x,
+                           y: player1.position.y + size.height / 2)
+        case .topLeft:
+            return CGPoint(x: size.width / 2,
+                           y: player2.position.y - size.height / 2)
+        case .topRight:
+            return CGPoint(x: frame.width - size.width / 2,
+                           y: player2.position.y - size.height / 2)
+        case .bottomLeft:
+            return CGPoint(x: size.width / 2,
+                           y: player1.position.y + size.height / 2)
+        case .bottomRight:
+            return CGPoint(x: frame.width - size.width / 2,
+                           y: player1.position.y + size.height / 2)
         }
     }
 }
