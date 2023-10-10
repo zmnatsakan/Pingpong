@@ -21,7 +21,9 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private var player2 = SKSpriteNode()
     private var ball = SKSpriteNode()
     private var obstacle = SKSpriteNode()
-    private var button = SKSpriteNode()
+    private var backButton = SKSpriteNode()
+    private var nextButton = SKSpriteNode()
+    private var retryButton = SKSpriteNode()
     
     private let images = ["apple", "apple-core", "banana", "watermelon", "avocado"]
     
@@ -32,6 +34,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     private var timerNode = SKLabelNode()
     private var hitCountNode = SKLabelNode()
+    private var levelNumber = 0
     
     private var detectors = [SKShapeNode]()
     
@@ -55,8 +58,8 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     // MARK: - Initialization
     
-    init(size: CGSize, configuration: GameConfiguration) {
-        self.configuration = configuration
+    init(size: CGSize, levelNumber: Int) {
+        self.levelNumber = levelNumber
         super.init(size: size)
         setupObjects()
     }
@@ -81,8 +84,14 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
-        if button.contains(touch.location(in: self)) {
+        let currentTouch = touch.location(in: self)
+        if backButton.contains(currentTouch) {
             isBack.toggle()
+        } else if nextButton.contains(currentTouch) {
+            levelNumber += 1
+            reloadScene()
+        } else if retryButton.contains(currentTouch) {
+            reloadScene()
         }
     }
     
@@ -150,7 +159,8 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private func countdown() {
         timeLeft -= 1
         if timeLeft <= 0 {
-            reloadScene()
+            ball.removeFromParent()
+            showWinScreen()
         }
     }
     
@@ -165,6 +175,8 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         
         // Create ball always
         createBall(at: CGPoint(x: player1.position.x, y: size.height / 2 - 200))
+        
+        configuration = LevelConfig.levels[levelNumber % 10]
         
         if let config = configuration {
             if let time = config.time { createTimer(seconds: time) }
@@ -183,10 +195,93 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         addChild(ball)
     }
     
+    private func createSemiTransparentBackground() -> SKSpriteNode {
+        let background = SKSpriteNode(color: SKColor.black, size: self.size)
+        background.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
+        background.zPosition = 10 // Ensure it's rendered above other nodes
+        background.alpha = 0  // Start invisible for the fade in animation
+        return background
+    }
+    
+    private func showWinScreen() {
+        let background = createSemiTransparentBackground()
+        addChild(background)
+        
+        let fadeIn = SKAction.fadeAlpha(to: 1.0, duration: 0.5)
+        background.run(fadeIn)
+        
+        let winLabel = SKLabelNode(text: "You Win!")
+        winLabel.fontSize = 40
+        winLabel.fontColor = SKColor.green
+        winLabel.position = CGPoint(x: self.size.width/2, y: self.size.height/2 + 20)
+        winLabel.alpha = 0
+        winLabel.zPosition = 11
+        addChild(winLabel)
+        winLabel.run(fadeIn)
+        
+        let nextButton = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 150, height: 50))
+        nextButton.name = "nextButton"
+        nextButton.position = CGPoint(x: self.size.width/2, y: self.size.height/2 - 50)
+        nextButton.alpha = 0
+        nextButton.zPosition = 11
+        addChild(nextButton)
+        nextButton.run(fadeIn)
+        self.nextButton = nextButton
+        
+        let buttonText = SKLabelNode(text: "Next")
+        buttonText.fontSize = 20
+        buttonText.fontColor = SKColor.white
+        buttonText.position = CGPoint.zero
+        buttonText.alpha = 0
+        buttonText.zPosition = 12
+        nextButton.addChild(buttonText)
+        buttonText.run(fadeIn)
+    }
+    
+    func showLoseScreen() {
+        // Create and add the semi-transparent background
+        let background = createSemiTransparentBackground()
+        addChild(background)
+        
+        let fadeIn = SKAction.fadeAlpha(to: 1.0, duration: 0.5)
+        background.run(fadeIn)
+        
+        // Set up the "You Lose!" label with fade-in animation
+        let loseLabel = SKLabelNode(text: "You Lose!")
+        loseLabel.fontSize = 40
+        loseLabel.fontColor = SKColor.red
+        loseLabel.position = CGPoint(x: self.size.width/2, y: self.size.height/2 + 20)
+        loseLabel.alpha = 0  // Start invisible for the fade in animation
+        loseLabel.zPosition = 11
+        addChild(loseLabel)
+        loseLabel.run(fadeIn)
+        
+        // Set up the "Retry" button with fade-in animation
+        let retryButton = SKSpriteNode(color: SKColor.orange, size: CGSize(width: 150, height: 50))
+        retryButton.name = "retryButton"
+        retryButton.position = CGPoint(x: self.size.width/2, y: self.size.height/2 - 50)
+        retryButton.alpha = 0  // Start invisible for the fade in animation
+        retryButton.zPosition = 11
+        addChild(retryButton)
+        retryButton.run(fadeIn)
+        self.retryButton = retryButton
+        
+        // Add the text "Retry" to the button and run fade-in animation
+        let buttonText = SKLabelNode(text: "Retry")
+        buttonText.fontSize = 20
+        buttonText.fontColor = SKColor.white
+        buttonText.position = CGPoint.zero
+        buttonText.alpha = 0  // Start invisible for the fade in animation
+        buttonText.zPosition = 12
+        retryButton.addChild(buttonText)
+        buttonText.run(fadeIn)
+    }
+
+    
     private func createBackButton() {
-        button = SKSpriteNode(texture: SKTexture(imageNamed: "back"), size: CGSize(width: 50, height: 50))
-        button.position = CGPoint(x: 60, y: size.height - 60)
-        addChild(button)
+        backButton = SKSpriteNode(texture: SKTexture(imageNamed: "back"), size: CGSize(width: 50, height: 50))
+        backButton.position = CGPoint(x: 60, y: size.height - 60)
+        addChild(backButton)
     }
     
     private func createObstacles(_ obstacles: [Obstacle]) {
