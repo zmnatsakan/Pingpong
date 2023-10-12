@@ -27,7 +27,8 @@ struct LevelConfig {
                           ]),
         
         // Level 2: Very short timed game with simple hit and goal targets.
-        GameConfiguration(time: 40,
+        GameConfiguration(ballSpeedMultiplier: 3,
+                          time: 40,
                           hitTarget: 5,
                           goalTarget: 2),
         

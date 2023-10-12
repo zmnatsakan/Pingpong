@@ -12,7 +12,6 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     // MARK: - Published Properties
     
-    @Published var score = (0, 0)
     @Published var isBack: Bool = false
     
     // MARK: - Private Properties
@@ -34,25 +33,36 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     private var timerNode = SKLabelNode()
     private var hitCountNode = SKLabelNode()
+    private var scoreNodes = (SKLabelNode(), SKLabelNode())
     private var levelNumber = 0
     
     private var detectors = [SKShapeNode]()
     
-    var configuration: GameConfiguration?
+    private var configuration: GameConfiguration?
     
-    var center: CGPoint {
+    private var center: CGPoint {
         return CGPoint(x: frame.width / 2, y: frame.height / 2)
     }
     
-    var timeLeft: Int = 99 {
+    private var score = (0, 0) {
+        didSet {
+            scoreNodes.0.text = "\(score.0)"
+            if let scoreGoal = configuration?.goalTarget {
+                scoreNodes.0.text! += "/\(scoreGoal)"
+            }
+            scoreNodes.1.text = "\(score.1)"
+        }
+    }
+    
+    private var timeLeft: Int = 99 {
         didSet {
             timerNode.text = "Time Left: \(timeLeft < 10 ? "0" : "")\(timeLeft)"
         }
     }
     
-    var hitCount: Int = 0 {
+    private var hitCount: Int = 0 {
         didSet {
-            hitCountNode.text = "Hits: \(hitCount < 10 ? "0" : "")\(hitCount)"
+            hitCountNode.text = "Hits: \(hitCount)/\(configuration?.hitTarget ?? 0)"
         }
     }
     
@@ -81,7 +91,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     }
     
     // MARK: - Touch Handling
-    
+      
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let currentTouch = touch.location(in: self)
@@ -118,13 +128,18 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         if player1Win || player2Win {
             ball.run(SKAction.fadeOut(withDuration: 0.5))
             ball.removeFromParent()
-            createBall(at: CGPoint(x: size.width / 2, y: size.height / 2))
-            addChild(ball)
             
             if player1Win {
                 score.0 += 1
+                checkFinishGame()
+                createBall(at: CGPoint(x: player1.position.x, y: player1.position.y + 10),
+                           speedMultiplier: (configuration?.ballSpeedMultiplier ?? 1))
+                addChild(ball)
             } else {
                 score.1 += 1
+                createBall(at: CGPoint(x: player2.position.x, y: player2.position.y - 10),
+                           speedMultiplier: -(configuration?.ballSpeedMultiplier ?? 1))
+                addChild(ball)
             }
         }
     }
@@ -134,7 +149,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         let targetX = ball.position.x.clamped(to: halfPaddleWidth...(size.width - halfPaddleWidth))
         
         let deltaX = targetX - player2.position.x
-        let timeToReachTarget = abs(deltaX) / 350
+        let timeToReachTarget = abs(deltaX) / (350 * (configuration?.computerSpeedMultiplier ?? 1))
         
         let moveAction = SKAction.moveTo(x: targetX, duration: TimeInterval(timeToReachTarget))
         player2.run(moveAction)
@@ -159,8 +174,8 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private func countdown() {
         timeLeft -= 1
         if timeLeft <= 0 {
-            ball.removeFromParent()
-            showWinScreen()
+//            showWinScreen()
+            checkFinishGame()
         }
     }
     
@@ -169,14 +184,18 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private func setupObjects() {
         removeAllChildren()
         
+        configuration = LevelConfig.levels[levelNumber % 10]
         physicsWorld.gravity = .zero
         
         createPlayers()
+        createScoreLabels()
+        
         
         // Create ball always
-        createBall(at: CGPoint(x: player1.position.x, y: size.height / 2 - 200))
+        createBall(at: CGPoint(x: player1.position.x, y: size.height / 2 - 200),
+                   speedMultiplier: (configuration?.ballSpeedMultiplier ?? 1))
         
-        configuration = LevelConfig.levels[levelNumber % 10]
+        
         
         if let config = configuration {
             if let time = config.time { createTimer(seconds: time) }
@@ -193,9 +212,21 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         addChild(player1)
         addChild(player2)
         addChild(ball)
+        
+        score = (0, 0)
+    }
+    
+    private func createScoreLabels() {
+        scoreNodes.0.position = CGPoint(x: center.x, y: (player1.position.y) / 2)
+        scoreNodes.0.fontColor = .white
+        addChild(scoreNodes.0)
+        scoreNodes.1.position = CGPoint(x: center.x, y: (frame.height + player2.position.y) / 2)
+        scoreNodes.1.fontColor = .white
+        addChild(scoreNodes.1)
     }
     
     private func createSemiTransparentBackground() -> SKSpriteNode {
+        ball.removeFromParent()
         let background = SKSpriteNode(color: SKColor.black, size: self.size)
         background.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
         background.zPosition = 10 // Ensure it's rendered above other nodes
@@ -381,7 +412,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         return player
     }
     
-    private func createBall(at position: CGPoint) {
+    private func createBall(at position: CGPoint, speedMultiplier: CGFloat = 1) {
         let size = CGSize(width: 40, height: 40)
         let imageName = images.randomElement() ?? "apple"
         
@@ -390,7 +421,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         ball.position = position
         //        ball.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: imageName), size: size).ideal()
         ball.physicsBody = SKPhysicsBody(circleOfRadius: 20).ideal()
-        ball.physicsBody?.velocity = CGVector(dx: 20, dy: -250)
+        ball.physicsBody?.velocity = CGVector(dx: 20, dy: -250) * speedMultiplier
         ball.physicsBody?.angularVelocity = 5
         ball.physicsBody?.angularDamping = 1
         ball.physicsBody?.categoryBitMask = ballCategory
@@ -405,6 +436,20 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     }
     
     // MARK: - Helper Methods for Object Creation and Handling
+    
+    private func checkFinishGame() {
+        if timeLeft <= 0 || configuration?.time == nil {
+            if  configuration?.hitTarget == nil || configuration!.hitTarget! <= hitCount {
+                if (configuration?.goalTarget == nil && score.0 > score.1) || configuration!.goalTarget! <= score.0 {
+                    showWinScreen()
+                } else {
+                    showLoseScreen()
+                }
+            } else {
+                showLoseScreen()
+            }
+        }
+    }
     
     private func handleBoost() {
         guard !isBoost else { return }
@@ -426,6 +471,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         guard !isHit else { return }
         
         hitCount += 1
+        checkFinishGame()
         isHit = true
         
         let wait = SKAction.wait(forDuration: 0.2)  // Adjust the duration as needed
