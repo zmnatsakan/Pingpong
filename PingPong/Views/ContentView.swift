@@ -9,7 +9,7 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    @ObservedObject var gameScene: GameScene = GameScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), levelNumber: 1)
+    @ObservedObject var gameScene: GameScene = GameScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), levelNumber: 0)
     @Binding var isGame: Bool
     var scene: SKScene  {
         let scene = gameScene

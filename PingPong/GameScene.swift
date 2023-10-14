@@ -184,7 +184,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private func setupObjects() {
         removeAllChildren()
         
-        configuration = LevelConfig.levels[levelNumber % 10]
+        configuration = LevelConfig.levels[levelNumber % LevelConfig.levels.count]
         physicsWorld.gravity = .zero
         
         createPlayers()
@@ -440,7 +440,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private func checkFinishGame() {
         if timeLeft <= 0 || configuration?.time == nil {
             if  configuration?.hitTarget == nil || configuration!.hitTarget! <= hitCount {
-                if (configuration?.goalTarget == nil && score.0 > score.1) || configuration!.goalTarget! <= score.0 {
+                if (configuration?.goalTarget == nil && score.0 > score.1) || configuration?.goalTarget ?? 0 <= score.0 {
                     showWinScreen()
                 } else {
                     showLoseScreen()

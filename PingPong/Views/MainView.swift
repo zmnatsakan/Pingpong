@@ -19,7 +19,7 @@ struct MainView: View {
             if isGame {
                 ContentView(gameScene: gameScene, isGame: $isGame)
             } else {
-                VStack {
+                ScrollView {
                     ForEach(0..<LevelConfig.levels.count, id: \.self) { index in
                         Button {
                             currentLevel = index
