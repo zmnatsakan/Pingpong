@@ -24,7 +24,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private var nextButton = SKSpriteNode()
     private var retryButton = SKSpriteNode()
     
-    private let images = ["apple", "apple-core", "banana", "watermelon", "avocado"]
+//    private let images = ["apple", "apple-core", "banana", "watermelon", "avocado"]
     
     private let ballCategory: UInt32 = 1
     private let boostCategory: UInt32 = 2
@@ -402,10 +402,12 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     }
     
     private func createPlayer(position: CGPoint) -> SKSpriteNode {
-        let player = SKSpriteNode(imageNamed: "lens")
+        let imageName = configuration?.playerTexture.rawValue ?? "lens"
+        let player = SKSpriteNode(imageNamed: imageName)
         player.size = CGSize(width: 100, height: 25)
         player.position = position
-        player.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: "lens"), size: player.size).ideal().manualMovement()
+        player.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: imageName),
+                                           size: player.size).ideal().manualMovement()
         player.physicsBody?.categoryBitMask = playerCategory
         player.physicsBody?.collisionBitMask = ballCategory
         player.physicsBody?.contactTestBitMask = ballCategory
@@ -414,7 +416,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     private func createBall(at position: CGPoint, speedMultiplier: CGFloat = 1) {
         let size = CGSize(width: 40, height: 40)
-        let imageName = images.randomElement() ?? "apple"
+        let imageName = configuration?.ballTexture.rawValue ?? "apple"
         
         let ball = SKSpriteNode(imageNamed: imageName)
         ball.size = size

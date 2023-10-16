@@ -7,32 +7,12 @@
 
 import Foundation
 
-enum Position {
-    case center
-    case left
-    case right
-    case top
-    case bottom
-    case topLeft
-    case topRight
-    case bottomLeft
-    case bottomRight
-}
-
-enum BoostType {
-    case boost
-    case slow
-}
-
-enum ObstacleType {
-    case vertical
-    case horizontal
-}
-
 typealias Boost = (type: BoostType, position: Position, size: CGSize)
 typealias Obstacle = (type: ObstacleType, position: Position, size: CGSize, offset: CGFloat)
 
 struct GameConfiguration {
+    var playerTexture: PlayerTexture = .lens    // lens texture by default
+    var ballTexture: BallTexture = .apple       // apple texture by default
     var ballSpeedMultiplier: CGFloat = 1.0      // 1 if default speed
     var computerSpeedMultiplier: CGFloat = 1.0  // 1 if default speed
     var time: Int? = nil                        // nil if no timer is needed

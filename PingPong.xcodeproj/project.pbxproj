@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		58045C822ABC8EC30004189E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58045C812ABC8EC30004189E /* MainView.swift */; };
+		581462082ADD9BBD00A943EA /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581462072ADD9BBD00A943EA /* Position.swift */; };
+		5814620A2ADD9BD900A943EA /* BallTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581462092ADD9BD900A943EA /* BallTexture.swift */; };
+		5814620C2ADD9C0300A943EA /* PlayerTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5814620B2ADD9C0300A943EA /* PlayerTexture.swift */; };
+		5814620E2ADD9C2300A943EA /* BoostType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5814620D2ADD9C2300A943EA /* BoostType.swift */; };
+		581462102ADD9C6500A943EA /* ObstacleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5814620F2ADD9C6500A943EA /* ObstacleType.swift */; };
 		5850ED882ABC507300B53627 /* PingPongApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5850ED872ABC507300B53627 /* PingPongApp.swift */; };
 		5850ED8A2ABC507300B53627 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5850ED892ABC507300B53627 /* ContentView.swift */; };
 		5850ED8C2ABC507500B53627 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5850ED8B2ABC507500B53627 /* Assets.xcassets */; };
@@ -25,6 +30,11 @@
 
 /* Begin PBXFileReference section */
 		58045C812ABC8EC30004189E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		581462072ADD9BBD00A943EA /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
+		581462092ADD9BD900A943EA /* BallTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallTexture.swift; sourceTree = "<group>"; };
+		5814620B2ADD9C0300A943EA /* PlayerTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTexture.swift; sourceTree = "<group>"; };
+		5814620D2ADD9C2300A943EA /* BoostType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostType.swift; sourceTree = "<group>"; };
+		5814620F2ADD9C6500A943EA /* ObstacleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObstacleType.swift; sourceTree = "<group>"; };
 		5850ED842ABC507300B53627 /* PingPong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PingPong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5850ED872ABC507300B53627 /* PingPongApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PingPongApp.swift; sourceTree = "<group>"; };
 		5850ED892ABC507300B53627 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -88,7 +98,6 @@
 				5850ED8B2ABC507500B53627 /* Assets.xcassets */,
 				5850ED8D2ABC507500B53627 /* Preview Content */,
 				5865BAFD2ABC6F3600B76776 /* GameScene.swift */,
-				58F53EED2AD02D9C00F12D7B /* LevelConfig.swift */,
 			);
 			path = PingPong;
 			sourceTree = "<group>";
@@ -116,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				58F53EF02AD02E0F00F12D7B /* GameConfiguration.swift */,
+				58F53EED2AD02D9C00F12D7B /* LevelConfig.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -125,6 +135,11 @@
 			children = (
 				58F53EF32AD02E4F00F12D7B /* ContactType.swift */,
 				58F53EF52AD02E8900F12D7B /* BitMask.swift */,
+				581462072ADD9BBD00A943EA /* Position.swift */,
+				581462092ADD9BD900A943EA /* BallTexture.swift */,
+				5814620B2ADD9C0300A943EA /* PlayerTexture.swift */,
+				5814620D2ADD9C2300A943EA /* BoostType.swift */,
+				5814620F2ADD9C6500A943EA /* ObstacleType.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -200,13 +215,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				5850ED8A2ABC507300B53627 /* ContentView.swift in Sources */,
+				581462102ADD9C6500A943EA /* ObstacleType.swift in Sources */,
 				5865BAFC2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift in Sources */,
 				5862A2162ACD7208005A9720 /* CGVectorExtensions.swift in Sources */,
+				5814620E2ADD9C2300A943EA /* BoostType.swift in Sources */,
 				58F53EF62AD02E8900F12D7B /* BitMask.swift in Sources */,
 				5865BAFE2ABC6F3600B76776 /* GameScene.swift in Sources */,
 				58045C822ABC8EC30004189E /* MainView.swift in Sources */,
+				5814620A2ADD9BD900A943EA /* BallTexture.swift in Sources */,
 				58F53EEE2AD02D9C00F12D7B /* LevelConfig.swift in Sources */,
+				581462082ADD9BBD00A943EA /* Position.swift in Sources */,
 				5862A2172ACD7208005A9720 /* CGExtensions.swift in Sources */,
+				5814620C2ADD9C0300A943EA /* PlayerTexture.swift in Sources */,
 				58F53EF42AD02E4F00F12D7B /* ContactType.swift in Sources */,
 				5862A2182ACD7208005A9720 /* CGPointExtensions.swift in Sources */,
 				58F53EF12AD02E0F00F12D7B /* GameConfiguration.swift in Sources */,
