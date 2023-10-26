@@ -8,33 +8,39 @@
 import SwiftUI
 
 struct MainView: View {
-    @State var isGame = false
-    @State var currentLevel = 0
-    
     var body: some View {
-        ZStack {
-            let gameScene = GameScene(size: CGSize(width: UIScreen.main.bounds.size.width,
-                                                   height: UIScreen.main.bounds.size.height),
-                                      levelNumber: currentLevel)
-            if isGame {
-                ContentView(gameScene: gameScene, isGame: $isGame)
-            } else {
-                ScrollView {
-                    ForEach(0..<LevelConfig.levels.count, id: \.self) { index in
-                        Button {
-                            currentLevel = index
-                            isGame.toggle()
-                        } label: {
-                            Text("Level \(index + 1)")
-                                .font(.title)
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .padding(.horizontal)
-                    }
+        NavigationStack {
+            VStack {
+                NavigationLink {
+                    LevelsView()
+                } label: {
+                    Text("Play")
+                        .foregroundStyle(.white)
+                        .font(.largeTitle.bold())
+                        .padding()
+                        .frame(width: 300)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .foregroundStyle(.blue)
+                        )
                 }
-            }
-        }
+                
+                NavigationLink {
+                    SettingsView()
+                } label: {
+                    Text("Settings")
+                        .foregroundStyle(.white)
+                        .font(.largeTitle.bold())
+                        .padding()
+                        .frame(width: 300)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .foregroundStyle(.blue)
+                        )
+                }
+            } //VSTACK
+            .navigationTitle("Main View")
+        } //NAVIGATIONSTACK
     }
 }
 
