@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		58000E9E2AE7FD2C008621E3 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58000E9D2AE7FD2C008621E3 /* HapticManager.swift */; };
+		58000EA02AE92794008621E3 /* LevelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58000E9F2AE92794008621E3 /* LevelsView.swift */; };
+		58000EA22AE928EC008621E3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58000EA12AE928EC008621E3 /* SettingsView.swift */; };
 		58045C822ABC8EC30004189E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58045C812ABC8EC30004189E /* MainView.swift */; };
 		581462082ADD9BBD00A943EA /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581462072ADD9BBD00A943EA /* Position.swift */; };
 		5814620A2ADD9BD900A943EA /* BallTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581462092ADD9BD900A943EA /* BallTexture.swift */; };
@@ -29,6 +32,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		58000E9D2AE7FD2C008621E3 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		58000E9F2AE92794008621E3 /* LevelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelsView.swift; sourceTree = "<group>"; };
+		58000EA12AE928EC008621E3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		58045C812ABC8EC30004189E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		581462072ADD9BBD00A943EA /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		581462092ADD9BD900A943EA /* BallTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallTexture.swift; sourceTree = "<group>"; };
@@ -67,6 +73,8 @@
 			children = (
 				5850ED892ABC507300B53627 /* ContentView.swift */,
 				58045C812ABC8EC30004189E /* MainView.swift */,
+				58000E9F2AE92794008621E3 /* LevelsView.swift */,
+				58000EA12AE928EC008621E3 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -98,6 +106,7 @@
 				5850ED8B2ABC507500B53627 /* Assets.xcassets */,
 				5850ED8D2ABC507500B53627 /* Preview Content */,
 				5865BAFD2ABC6F3600B76776 /* GameScene.swift */,
+				58000E9D2AE7FD2C008621E3 /* HapticManager.swift */,
 			);
 			path = PingPong;
 			sourceTree = "<group>";
@@ -219,17 +228,20 @@
 				5865BAFC2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift in Sources */,
 				5862A2162ACD7208005A9720 /* CGVectorExtensions.swift in Sources */,
 				5814620E2ADD9C2300A943EA /* BoostType.swift in Sources */,
+				58000EA22AE928EC008621E3 /* SettingsView.swift in Sources */,
 				58F53EF62AD02E8900F12D7B /* BitMask.swift in Sources */,
 				5865BAFE2ABC6F3600B76776 /* GameScene.swift in Sources */,
 				58045C822ABC8EC30004189E /* MainView.swift in Sources */,
 				5814620A2ADD9BD900A943EA /* BallTexture.swift in Sources */,
 				58F53EEE2AD02D9C00F12D7B /* LevelConfig.swift in Sources */,
+				58000EA02AE92794008621E3 /* LevelsView.swift in Sources */,
 				581462082ADD9BBD00A943EA /* Position.swift in Sources */,
 				5862A2172ACD7208005A9720 /* CGExtensions.swift in Sources */,
 				5814620C2ADD9C0300A943EA /* PlayerTexture.swift in Sources */,
 				58F53EF42AD02E4F00F12D7B /* ContactType.swift in Sources */,
 				5862A2182ACD7208005A9720 /* CGPointExtensions.swift in Sources */,
 				58F53EF12AD02E0F00F12D7B /* GameConfiguration.swift in Sources */,
+				58000E9E2AE7FD2C008621E3 /* HapticManager.swift in Sources */,
 				5850ED882ABC507300B53627 /* PingPongApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

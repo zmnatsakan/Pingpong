@@ -68,10 +68,11 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     // MARK: - Initialization
     
-    init(size: CGSize, levelNumber: Int) {
+    init(size: CGSize, levelNumber: Int, isFreePlayMode: Bool = false) {
         self.levelNumber = levelNumber
         super.init(size: size)
-        setupObjects()
+        setupObjects(isFreePlay: isFreePlayMode)
+        print("freeplay:", isFreePlayMode)
     }
     
     override init(size: CGSize) {
@@ -135,11 +136,13 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
                 createBall(at: CGPoint(x: player1.position.x, y: player1.position.y + 10),
                            speedMultiplier: (configuration?.ballSpeedMultiplier ?? 1))
                 addChild(ball)
+                HapticManager.shared.heavyFeedback()
             } else {
                 score.1 += 1
                 createBall(at: CGPoint(x: player2.position.x, y: player2.position.y - 10),
                            speedMultiplier: -(configuration?.ballSpeedMultiplier ?? 1))
                 addChild(ball)
+                HapticManager.shared.heavyFeedback()
             }
         }
     }
@@ -181,10 +184,13 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     // MARK: - Object Setup
     
-    private func setupObjects() {
+    private func setupObjects(isFreePlay: Bool = false) {
         removeAllChildren()
         
         configuration = LevelConfig.levels[levelNumber % LevelConfig.levels.count]
+        if isFreePlay {
+            configuration?.makeFreePlay()
+        }
         physicsWorld.gravity = .zero
         
         createPlayers()
@@ -198,8 +204,10 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         
         
         if let config = configuration {
-            if let time = config.time { createTimer(seconds: time) }
-            if let hitTarget = config.hitTarget { createHitCount(target: hitTarget) }
+            if !config.isFreePlay {
+                if let time = config.time { createTimer(seconds: time) }
+                if let hitTarget = config.hitTarget { createHitCount(target: hitTarget) }
+            }
             
             if !config.obstacles.isEmpty { createObstacles(config.obstacles) }
             if !config.boosts.isEmpty { createBoostFields(config.boosts) }
@@ -267,6 +275,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         buttonText.zPosition = 12
         nextButton.addChild(buttonText)
         buttonText.run(fadeIn)
+        HapticManager.shared.successFeedback()
     }
     
     func showLoseScreen() {
@@ -306,6 +315,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         buttonText.zPosition = 12
         retryButton.addChild(buttonText)
         buttonText.run(fadeIn)
+        HapticManager.shared.errorFeedback()
     }
 
     
@@ -440,6 +450,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     // MARK: - Helper Methods for Object Creation and Handling
     
     private func checkFinishGame() {
+        guard !(configuration?.isFreePlay ?? false) else { return }
         if timeLeft <= 0 || configuration?.time == nil {
             if  configuration?.hitTarget == nil || configuration!.hitTarget! <= hitCount {
                 if (configuration?.goalTarget == nil && score.0 > score.1) || configuration?.goalTarget ?? 0 <= score.0 {
@@ -473,6 +484,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         guard !isHit else { return }
         
         hitCount += 1
+        HapticManager.shared.lightFeedback()
         checkFinishGame()
         isHit = true
         
