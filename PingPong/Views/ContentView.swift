@@ -27,6 +27,8 @@ struct ContentView: View {
         .onChange(of: gameScene.isBack) { _ in
             isGame = false
         }
+        .navigationBarBackButtonHidden()
+        .toolbar(.hidden, for: .navigationBar)
     }
 }
 
