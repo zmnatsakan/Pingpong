@@ -24,9 +24,6 @@ struct ContentView: View {
                 .ignoresSafeArea()
             SpriteView(scene: scene)
         } //ZSTACK
-        .onChange(of: gameScene.isBack) { _ in
-            isGame = false
-        }
         .navigationBarBackButtonHidden()
         .toolbar(.hidden, for: .navigationBar)
     }

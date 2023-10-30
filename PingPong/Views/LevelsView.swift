@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LevelsView: View {
     @State var isGame = false
-    @State var currentLevel = 0
+    @AppStorage("current level") var currentLevel = 0
     @State var isFreePlayMode: Bool = false
     
     var body: some View {
@@ -17,7 +17,9 @@ struct LevelsView: View {
             let screenSize = CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
             let gameScene = GameScene(size: screenSize,
                                       levelNumber: currentLevel,
-                                      isFreePlayMode: isFreePlayMode)
+                                      isFreePlayMode: isFreePlayMode) {
+                self.isGame = false
+            }
             if isGame {
                 ContentView(gameScene: gameScene, isGame: $isGame)
             } else {

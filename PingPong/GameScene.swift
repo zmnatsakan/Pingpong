@@ -9,10 +9,9 @@ import SpriteKit
 import SwiftUI
 
 final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
+    // MARK: - Persisted Properties
     
-    // MARK: - Published Properties
-    
-    @Published var isBack: Bool = false
+    @AppStorage("completed") var completed: [Int: Bool] = [:]
     
     // MARK: - Private Properties
     
@@ -39,6 +38,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private var detectors = [SKShapeNode]()
     
     private var configuration: GameConfiguration?
+    private var backButtonAction: () -> ()
     
     private var center: CGPoint {
         return CGPoint(x: frame.width / 2, y: frame.height / 2)
@@ -68,16 +68,12 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     // MARK: - Initialization
     
-    init(size: CGSize, levelNumber: Int, isFreePlayMode: Bool = false) {
+    init(size: CGSize, levelNumber: Int, isFreePlayMode: Bool = false, backButtonAction: @escaping () -> () = {}) {
+        self.backButtonAction = backButtonAction
         self.levelNumber = levelNumber
         super.init(size: size)
         setupObjects(isFreePlay: isFreePlayMode)
         print("freeplay:", isFreePlayMode)
-    }
-    
-    override init(size: CGSize) {
-        super.init(size: size)
-        setupObjects()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -97,7 +93,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         guard let touch = touches.first else { return }
         let currentTouch = touch.location(in: self)
         if backButton.contains(currentTouch) {
-            isBack.toggle()
+            backButtonAction()
         } else if nextButton.contains(currentTouch) {
             levelNumber += 1
             reloadScene()
@@ -177,7 +173,6 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private func countdown() {
         timeLeft -= 1
         if timeLeft <= 0 {
-//            showWinScreen()
             checkFinishGame()
         }
     }
@@ -276,6 +271,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         nextButton.addChild(buttonText)
         buttonText.run(fadeIn)
         HapticManager.shared.successFeedback()
+        completed[levelNumber] = true
     }
     
     func showLoseScreen() {
@@ -453,7 +449,8 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         guard !(configuration?.isFreePlay ?? false) else { return }
         if timeLeft <= 0 || configuration?.time == nil {
             if  configuration?.hitTarget == nil || configuration!.hitTarget! <= hitCount {
-                if (configuration?.goalTarget == nil && score.0 > score.1) || configuration?.goalTarget ?? 0 <= score.0 {
+                if (configuration?.goalTarget == nil && score.0 > score.1) || 
+                    (configuration?.goalTarget ?? 0 <= score.0 && score.0 > score.1) {
                     showWinScreen()
                 } else {
                     showLoseScreen()

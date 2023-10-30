@@ -12,7 +12,7 @@ struct LevelConfig {
         // Level 1: A pure timed game without any obstacles or boosts.
         GameConfiguration(ballTexture: .apple,
                           ballSpeedMultiplier: 3,
-                          time: 70),
+                          time: 7),
         
         // Level 2: Very short timed game with simple hit and goal targets.
         GameConfiguration(ballTexture: .appleCore,
