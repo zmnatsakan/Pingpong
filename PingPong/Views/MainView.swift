@@ -12,9 +12,22 @@ struct MainView: View {
         NavigationStack {
             VStack {
                 NavigationLink {
-                    LevelsView()
+                    LevelsView(isGame: true, isFreePlayMode: false)
                 } label: {
                     Text("Play")
+                        .foregroundStyle(.white)
+                        .font(.largeTitle.bold())
+                        .padding()
+                        .frame(width: 300)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .foregroundStyle(.blue)
+                        )
+                }
+                NavigationLink {
+                    LevelsView()
+                } label: {
+                    Text("Select level")
                         .foregroundStyle(.white)
                         .font(.largeTitle.bold())
                         .padding()
