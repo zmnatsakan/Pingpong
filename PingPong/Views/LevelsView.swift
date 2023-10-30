@@ -11,6 +11,17 @@ struct LevelsView: View {
     @State var isGame = false
     @AppStorage("current level") var currentLevel = 0
     @State var isFreePlayMode: Bool = false
+    @AppStorage("completed") var completed: [Int: Bool] = [:]
+    
+    init(isGame: Bool = false, isFreePlay: Bool = false) {
+        self.isGame = isGame
+        self.isFreePlayMode = isFreePlay
+        if completed.isEmpty {
+            for i in 0..<LevelConfig.levels.count {
+                completed[i] = false
+            }
+        }
+    }
     
     var body: some View {
         ZStack {
@@ -44,6 +55,7 @@ struct LevelsView: View {
                             }
                             .buttonStyle(.borderedProminent)
                             .padding(.horizontal)
+                            .disabled(isFreePlayMode && completed[index] == false)
                         }
                     } //SCROLLVIEW
                 } //VSTACK

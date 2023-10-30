@@ -12,6 +12,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     // MARK: - Persisted Properties
     
     @AppStorage("completed") var completed: [Int: Bool] = [:]
+    @AppStorage("current level") var levelNumber = 0
     
     // MARK: - Private Properties
     
@@ -33,7 +34,8 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private var timerNode = SKLabelNode()
     private var hitCountNode = SKLabelNode()
     private var scoreNodes = (SKLabelNode(), SKLabelNode())
-    private var levelNumber = 0
+    
+    private var isFinished = false
     
     private var detectors = [SKShapeNode]()
     
@@ -73,7 +75,6 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         self.levelNumber = levelNumber
         super.init(size: size)
         setupObjects(isFreePlay: isFreePlayMode)
-        print("freeplay:", isFreePlayMode)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -94,10 +95,10 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         let currentTouch = touch.location(in: self)
         if backButton.contains(currentTouch) {
             backButtonAction()
+        } else if retryButton.contains(currentTouch) {
+            reloadScene()
         } else if nextButton.contains(currentTouch) {
             levelNumber += 1
-            reloadScene()
-        } else if retryButton.contains(currentTouch) {
             reloadScene()
         }
     }
@@ -166,6 +167,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     // MARK: - Game Restart
     
     func reloadScene() {
+        isFinished = false
         score = (0, 0)
         setupObjects()
     }
@@ -245,6 +247,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     }
     
     private func showWinScreen() {
+        isFinished = true
         let background = createSemiTransparentBackground()
         addChild(background)
         
@@ -282,6 +285,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     }
     
     func showLoseScreen() {
+        isFinished = true
         // Create and add the semi-transparent background
         let background = createSemiTransparentBackground()
         addChild(background)
@@ -319,6 +323,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         retryButton.addChild(buttonText)
         buttonText.run(fadeIn)
         HapticManager.shared.errorFeedback()
+        
     }
 
     
@@ -453,14 +458,16 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     // MARK: - Helper Methods for Object Creation and Handling
     
     private func checkFinishGame() {
-        guard !(configuration?.isFreePlay ?? false) else { return }
+        guard !(configuration?.isFreePlay ?? false), !isFinished else { return }
         if timeLeft <= 0 || configuration?.time == nil {
             if  configuration?.hitTarget == nil || configuration!.hitTarget! <= hitCount {
                 if (configuration?.goalTarget == nil && score.0 > score.1) || 
                     (configuration?.goalTarget ?? 0 <= score.0 && score.0 > score.1) {
                     showWinScreen()
                 } else {
-                    showLoseScreen()
+                    if configuration?.time != nil {
+                        showLoseScreen()
+                    }
                 }
             } else {
                 showLoseScreen()

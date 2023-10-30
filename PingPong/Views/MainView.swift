@@ -12,7 +12,7 @@ struct MainView: View {
         NavigationStack {
             VStack {
                 NavigationLink {
-                    LevelsView(isGame: true, isFreePlayMode: false)
+                    LevelsView(isGame: true, isFreePlay: false)
                 } label: {
                     Text("Play")
                         .foregroundStyle(.white)
