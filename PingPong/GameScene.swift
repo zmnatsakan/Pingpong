@@ -29,7 +29,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private let boostCategory: UInt32 = 2
     private let playerCategory: UInt32 = 4
     private let wallCategory: UInt32 = 8
-    
+    private let levelLabel = SKLabelNode()
     private var timerNode = SKLabelNode()
     private var hitCountNode = SKLabelNode()
     private var scoreNodes = (SKLabelNode(), SKLabelNode())
@@ -210,6 +210,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         
         createWalls()
         createBackButton()
+        createLevelLabel()
         
         
         addChild(player1)
@@ -217,6 +218,12 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         addChild(ball)
         
         score = (0, 0)
+    }
+    
+    private func createLevelLabel() {
+        levelLabel.position = CGPoint(x: center.x, y: 0)
+        levelLabel.text = "Level \(levelNumber + 1)"
+        addChild(levelLabel)
     }
     
     private func createScoreLabels() {
