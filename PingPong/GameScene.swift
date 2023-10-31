@@ -167,9 +167,9 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     // MARK: - Game Restart
     
     func reloadScene() {
-        isFinished = false
         score = (0, 0)
         setupObjects()
+        isFinished = false
     }
     
     private func countdown() {
@@ -193,6 +193,8 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         createPlayers()
         createScoreLabels()
         
+        retryButton = SKSpriteNode()
+        nextButton = SKSpriteNode()
         
         // Create ball always
         createBall(at: CGPoint(x: player1.position.x, y: size.height / 2 - 200),
@@ -242,7 +244,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         let background = SKSpriteNode(color: SKColor.black, size: self.size)
         background.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
         background.zPosition = 10 // Ensure it's rendered above other nodes
-        background.alpha = 0  // Start invisible for the fade in animation
+        background.alpha = 1  // Start invisible for the fade in animation
         return background
     }
     
@@ -266,7 +268,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         let nextButton = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 150, height: 50))
         nextButton.name = "nextButton"
         nextButton.position = CGPoint(x: self.size.width/2, y: self.size.height/2 - 50)
-        nextButton.alpha = 0
+        nextButton.alpha = 1
         nextButton.zPosition = 11
         addChild(nextButton)
         nextButton.run(fadeIn)
@@ -306,8 +308,8 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         // Set up the "Retry" button with fade-in animation
         let retryButton = SKSpriteNode(color: SKColor.orange, size: CGSize(width: 150, height: 50))
         retryButton.name = "retryButton"
-        retryButton.position = CGPoint(x: self.size.width/2, y: self.size.height/2 - 50)
-        retryButton.alpha = 0  // Start invisible for the fade in animation
+        retryButton.position = CGPoint(x: self.size.width/2, y: self.size.height/2 - 150)
+        retryButton.alpha = 1  // Start invisible for the fade in animation
         retryButton.zPosition = 11
         addChild(retryButton)
         retryButton.run(fadeIn)
@@ -458,22 +460,36 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     // MARK: - Helper Methods for Object Creation and Handling
     
     private func checkFinishGame() {
+        // Return if it's free play or already finished
         guard !(configuration?.isFreePlay ?? false), !isFinished else { return }
-        if timeLeft <= 0 || configuration?.time == nil {
-            if  configuration?.hitTarget == nil || configuration!.hitTarget! <= hitCount {
-                if (configuration?.goalTarget == nil && score.0 > score.1) || 
-                    (configuration?.goalTarget ?? 0 <= score.0 && score.0 > score.1) {
+
+        // Determine if game finished due to time
+        let isTimeFinished = timeLeft <= 0 || configuration?.time == nil
+
+        // Determine if hit count reached the target
+        let didHitTarget = configuration?.hitTarget == nil || configuration!.hitTarget! <= hitCount
+
+        // Determine if score reached the goal target and is greater than the opponent's score
+        let didReachScoreGoal = (configuration?.goalTarget == nil && score.0 > score.1) ||
+                                (configuration?.goalTarget ?? 0 <= score.0 && score.0 > score.1)
+        
+        if isTimeFinished {
+            if didHitTarget {
+                if didReachScoreGoal {
                     showWinScreen()
+                } else if configuration?.time != nil {
+                    showLoseScreen()
                 } else {
-                    if configuration?.time != nil {
-                        showLoseScreen()
-                    }
+                    return
                 }
-            } else {
-                showLoseScreen()
+//            } else {
+//                showLoseScreen()
             }
         }
+        
+        print("t:", isTimeFinished, ", h:", didHitTarget, ", g:", didReachScoreGoal)
     }
+ 
     
     private func handleBoost() {
         guard !isBoost else { return }

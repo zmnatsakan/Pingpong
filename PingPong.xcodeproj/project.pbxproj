@@ -27,6 +27,8 @@
 		5862A2182ACD7208005A9720 /* CGPointExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5862A2152ACD7208005A9720 /* CGPointExtensions.swift */; };
 		5865BAFC2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5865BAFB2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift */; };
 		5865BAFE2ABC6F3600B76776 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5865BAFD2ABC6F3600B76776 /* GameScene.swift */; };
+		589B29722AF0FA590020F211 /* CoinSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589B29712AF0FA580020F211 /* CoinSystem.swift */; };
+		589B29742AF101490020F211 /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589B29732AF101490020F211 /* StoreView.swift */; };
 		58F53EEE2AD02D9C00F12D7B /* LevelConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F53EED2AD02D9C00F12D7B /* LevelConfig.swift */; };
 		58F53EF12AD02E0F00F12D7B /* GameConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F53EF02AD02E0F00F12D7B /* GameConfiguration.swift */; };
 		58F53EF42AD02E4F00F12D7B /* ContactType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F53EF32AD02E4F00F12D7B /* ContactType.swift */; };
@@ -55,6 +57,8 @@
 		5862A2152ACD7208005A9720 /* CGPointExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPointExtensions.swift; sourceTree = "<group>"; };
 		5865BAFB2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKPhysicsBodyExtension.swift; sourceTree = "<group>"; };
 		5865BAFD2ABC6F3600B76776 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		589B29712AF0FA580020F211 /* CoinSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinSystem.swift; sourceTree = "<group>"; };
+		589B29732AF101490020F211 /* StoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreView.swift; sourceTree = "<group>"; };
 		58F53EED2AD02D9C00F12D7B /* LevelConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelConfig.swift; sourceTree = "<group>"; };
 		58F53EF02AD02E0F00F12D7B /* GameConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfiguration.swift; sourceTree = "<group>"; };
 		58F53EF32AD02E4F00F12D7B /* ContactType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactType.swift; sourceTree = "<group>"; };
@@ -87,6 +91,7 @@
 				58045C812ABC8EC30004189E /* MainView.swift */,
 				58000E9F2AE92794008621E3 /* LevelsView.swift */,
 				58000EA12AE928EC008621E3 /* SettingsView.swift */,
+				589B29732AF101490020F211 /* StoreView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -120,6 +125,7 @@
 				5850ED8D2ABC507500B53627 /* Preview Content */,
 				5865BAFD2ABC6F3600B76776 /* GameScene.swift */,
 				58000E9D2AE7FD2C008621E3 /* HapticManager.swift */,
+				589B29712AF0FA580020F211 /* CoinSystem.swift */,
 			);
 			path = PingPong;
 			sourceTree = "<group>";
@@ -247,11 +253,13 @@
 				585E20412AEFBFF30045B021 /* LevelsViewModel.swift in Sources */,
 				58F53EF62AD02E8900F12D7B /* BitMask.swift in Sources */,
 				5865BAFE2ABC6F3600B76776 /* GameScene.swift in Sources */,
+				589B29742AF101490020F211 /* StoreView.swift in Sources */,
 				58045C822ABC8EC30004189E /* MainView.swift in Sources */,
 				5814620A2ADD9BD900A943EA /* BallTexture.swift in Sources */,
 				58F53EEE2AD02D9C00F12D7B /* LevelConfig.swift in Sources */,
 				58000EA02AE92794008621E3 /* LevelsView.swift in Sources */,
 				581462082ADD9BBD00A943EA /* Position.swift in Sources */,
+				589B29722AF0FA590020F211 /* CoinSystem.swift in Sources */,
 				5862A2172ACD7208005A9720 /* CGExtensions.swift in Sources */,
 				5814620C2ADD9C0300A943EA /* PlayerTexture.swift in Sources */,
 				58F53EF42AD02E4F00F12D7B /* ContactType.swift in Sources */,
