@@ -39,6 +39,20 @@ struct MainView: View {
                 }
                 
                 NavigationLink {
+                    StoreView()
+                } label: {
+                    Text("Store")
+                        .foregroundStyle(.white)
+                        .font(.largeTitle.bold())
+                        .padding()
+                        .frame(width: 300)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .foregroundStyle(.blue)
+                        )
+                }
+                
+                NavigationLink {
                     SettingsView()
                 } label: {
                     Text("Settings")

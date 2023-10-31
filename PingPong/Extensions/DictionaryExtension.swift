@@ -25,5 +25,4 @@ extension Dictionary: RawRepresentable where Key == Int, Value == Bool {
         }
         return result
     }
-
 }

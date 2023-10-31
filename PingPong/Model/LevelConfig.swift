@@ -118,6 +118,7 @@ struct LevelConfig {
         
         // Level 9: Unlimited time with a high hit target and obstacles.
         GameConfiguration(ballTexture: .avocado,
+                          ballSpeedMultiplier: 3, 
                           hitTarget: 30,
                           obstacles: [
                             (type: .vertical,

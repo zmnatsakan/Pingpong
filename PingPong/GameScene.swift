@@ -13,6 +13,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     @AppStorage("completed") var completed: [Int: Bool] = [:]
     @AppStorage("current level") var levelNumber = 0
+    @AppStorage("activeBallTexture") var activeBallTexture = BallTexture.apple
     
     // MARK: - Private Properties
     
@@ -436,7 +437,8 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     private func createBall(at position: CGPoint, speedMultiplier: CGFloat = 1) {
         let size = CGSize(width: 40, height: 40)
-        let imageName = configuration?.ballTexture.rawValue ?? "apple"
+        let imageName = activeBallTexture.rawValue
+//        let imageName = configuration?.ballTexture.rawValue ?? "apple"
         
         let ball = SKSpriteNode(imageNamed: imageName)
         ball.size = size
