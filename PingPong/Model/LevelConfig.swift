@@ -10,19 +10,22 @@ import Foundation
 struct LevelConfig {
     static let levels: [GameConfiguration] = [
         // Level 1: A pure timed game without any obstacles or boosts.
-        GameConfiguration(ballTexture: .apple,
+        GameConfiguration(platformTexture: PlatformTexture.circle,
+                          ballTexture: .apple,
                           ballSpeedMultiplier: 3,
                           time: 7),
         
         // Level 2: Very short timed game with simple hit and goal targets.
-        GameConfiguration(ballTexture: .appleCore,
+        GameConfiguration(platformTexture: PlatformTexture.stick,
+                          ballTexture: .appleCore,
                           ballSpeedMultiplier: 3,
                           time: 40,
                           hitTarget: 5,
                           goalTarget: 2),
         
         // Level 3: Timed game with boosts and a goal target.
-        GameConfiguration(ballTexture: .banana,
+        GameConfiguration(platformTexture: PlatformTexture.red,
+                          ballTexture: .banana,
                           time: 80,
                           goalTarget: 3,
                           boosts: [
@@ -99,7 +102,7 @@ struct LevelConfig {
                           ]),
         
         // Level 8: Unlimited time with both obstacles and boosts, with a goal target.
-        GameConfiguration(ballTexture: .banana,
+        GameConfiguration(hitTarget: 50,
                           goalTarget: 5,
                           boosts: [
                             (type: .boost,
@@ -321,7 +324,7 @@ struct LevelConfig {
                             (type: .boost, position: .bottom, size: CGSize(width: 140, height: 140))
                           ],
                           obstacles: [
-                            (type: .horizontal, position: .center, size: CGSize(width: 50, height: 50), offset: 105)
+                            (type: .horizontal, position: .center, size: CGSize(width: 100, height: 50), offset: 105)
                           ])
     ]
 }

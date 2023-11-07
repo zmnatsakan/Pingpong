@@ -14,6 +14,8 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     @AppStorage("completed") var completed: [Int: Bool] = [:]
     @AppStorage("current level") var levelNumber = 0
     @AppStorage("activeBallTexture") var activeBallTexture = BallTexture.apple
+    @AppStorage("activeBackgroundTexture") var activeBackgroundTexture = BackgroundTexture.blue
+    @AppStorage("activePlatformTexture") var activePlayerTexture = PlatformTexture.stick
     
     // MARK: - Private Properties
     
@@ -24,9 +26,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private var backButton = SKSpriteNode()
     private var nextButton = SKSpriteNode()
     private var retryButton = SKSpriteNode()
-    
-//    private let images = ["apple", "apple-core", "banana", "watermelon", "avocado"]
-    
+
     private let ballCategory: UInt32 = 1
     private let boostCategory: UInt32 = 2
     private let playerCategory: UInt32 = 4
@@ -41,9 +41,12 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private var detectors = [SKShapeNode]()
     
     private var configuration: GameConfiguration?
+    
+    private var storeSystem = StoreSystem()
+//    private var finishScene: FinishScene?
     private var backButtonAction: () -> ()
     
-    private var center: CGPoint {
+    var center: CGPoint {
         return CGPoint(x: frame.width / 2, y: frame.height / 2)
     }
     
@@ -59,13 +62,13 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     
     private var timeLeft: Int = 99 {
         didSet {
-            timerNode.text = "Time Left: \(timeLeft < 10 ? "0" : "")\(timeLeft)"
+            timerNode.text = "\(timeLeft < 10 ? "0" : "")\(timeLeft)"
         }
     }
     
     private var hitCount: Int = 0 {
         didSet {
-            hitCountNode.text = "Hits: \(hitCount)/\(configuration?.hitTarget ?? 0)"
+            hitCountNode.text = "\(hitCount)/\(configuration?.hitTarget ?? 0)"
         }
     }
     
@@ -96,11 +99,17 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         let currentTouch = touch.location(in: self)
         if backButton.contains(currentTouch) {
             backButtonAction()
-        } else if retryButton.contains(currentTouch) {
-            reloadScene()
-        } else if nextButton.contains(currentTouch) {
+        }
+        
+        let positionInScene = touch.location(in: self)
+        let touchedNode = self.atPoint(positionInScene)
+        if touchedNode.name == "next" {
             levelNumber += 1
             reloadScene()
+        } else if touchedNode.name == "restart" {
+            reloadScene()
+        } else if touchedNode.name == "home" {
+            backButtonAction()
         }
     }
     
@@ -131,13 +140,13 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
             if player1Win {
                 score.0 += 1
                 checkFinishGame()
-                createBall(at: CGPoint(x: player1.position.x, y: player1.position.y + 10),
+                createBall(at: CGPoint(x: player1.position.x, y: player1.position.y + 40),
                            speedMultiplier: (configuration?.ballSpeedMultiplier ?? 1))
                 addChild(ball)
                 HapticManager.shared.heavyFeedback()
             } else {
                 score.1 += 1
-                createBall(at: CGPoint(x: player2.position.x, y: player2.position.y - 10),
+                createBall(at: CGPoint(x: player2.position.x, y: player2.position.y - 40),
                            speedMultiplier: -(configuration?.ballSpeedMultiplier ?? 1))
                 addChild(ball)
                 HapticManager.shared.heavyFeedback()
@@ -154,6 +163,13 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         
         let moveAction = SKAction.moveTo(x: targetX, duration: TimeInterval(timeToReachTarget))
         player2.run(moveAction)
+        
+        if configuration?.platformTexture == .red || configuration?.platformTexture == .green {
+            player2.zRotation = .pi - (center.x - player2.position.x) / size.width * .pi / 2
+        }
+        if activePlayerTexture == .red || activePlayerTexture == .green {
+            player1.zRotation = (center.x - player1.position.x) / size.width * .pi / 2
+        }
     }
     
     // MARK: - Physics Contact Delegate
@@ -183,7 +199,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     // MARK: - Object Setup
     
     private func setupObjects(isFreePlay: Bool = false) {
-        removeAllChildren()
+        self.removeAllChildren()
         
         configuration = LevelConfig.levels[levelNumber % LevelConfig.levels.count]
         if isFreePlay {
@@ -193,6 +209,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         
         createPlayers()
         createScoreLabels()
+        createBackground()
         
         retryButton = SKSpriteNode()
         nextButton = SKSpriteNode()
@@ -225,18 +242,56 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         score = (0, 0)
     }
     
+    private func createBackground() {
+        let bgColor = SKSpriteNode(color: UIColor(red: 0.1, green: 0.14, blue: 0.18, alpha: 1), size: size)
+        bgColor.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
+        bgColor.zPosition = -20
+        addChild(bgColor)
+        let texture = SKTexture(imageNamed: activeBackgroundTexture.rawValue)
+        let textureSize = CGSize(width: size.width, height: size.width * texture.size().height / texture.size().width)
+        let background = SKSpriteNode(texture: texture, size: textureSize)
+        background.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
+        background.zPosition = -10 // Ensure it's rendered below other nodes
+        background.alpha = 0.5
+        addChild(background)
+    }
+    
     private func createLevelLabel() {
-        levelLabel.position = CGPoint(x: center.x, y: 0)
-        levelLabel.text = "Level \(levelNumber + 1)"
+        let gradient = SKSpriteNode(texture: SKTexture(imageNamed: "gradients/sideGreen"))
+        gradient.size = CGSize(width: size.width / 2, height: 50)
+        gradient.zRotation = .pi
+        gradient.anchorPoint = CGPoint(x: 1, y: 0.5)
+        gradient.position = CGPoint(x: 0, y: frame.height - 135)
+        addChild(gradient)
+        
+        let label = SKLabelNode(text: "Level:")
+        label.position = CGPoint(x: 30, y: frame.height - 130)
+        label.fontColor = .white
+        label.horizontalAlignmentMode = .left
+        label.fontName = "HalvarBreit-Blk"
+        label.fontSize = 22
+        addChild(label)
+        
+        levelLabel.position = CGPoint(x: center.x, y: 30)
+        levelLabel.text = "\(levelNumber + 1)"
+        levelLabel.fontName = "HalvarBreit-Blk"
+        levelLabel.fontSize = 22
+        levelLabel.position = CGPoint(x: 30, y: frame.height - 150)
+        levelLabel.fontColor = .white
+        levelLabel.horizontalAlignmentMode = .left
         addChild(levelLabel)
     }
     
     private func createScoreLabels() {
         scoreNodes.0.position = CGPoint(x: center.x, y: (player1.position.y) / 2)
         scoreNodes.0.fontColor = .white
+        scoreNodes.0.fontName = "HalvarBreit-Blk"
+        scoreNodes.0.fontSize = 22
         addChild(scoreNodes.0)
-        scoreNodes.1.position = CGPoint(x: center.x, y: (frame.height + player2.position.y) / 2)
+        scoreNodes.1.position = CGPoint(x: center.x, y: (frame.height + player2.position.y) / 2 )
         scoreNodes.1.fontColor = .white
+        scoreNodes.1.fontName = "HalvarBreit-Blk"
+        scoreNodes.1.fontSize = 22
         addChild(scoreNodes.1)
     }
     
@@ -248,87 +303,6 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         background.alpha = 1  // Start invisible for the fade in animation
         return background
     }
-    
-    private func showWinScreen() {
-        isFinished = true
-        let background = createSemiTransparentBackground()
-        addChild(background)
-        
-        let fadeIn = SKAction.fadeAlpha(to: 1.0, duration: 0.5)
-        background.run(fadeIn)
-        
-        let winLabel = SKLabelNode(text: "You Win!")
-        winLabel.fontSize = 40
-        winLabel.fontColor = SKColor.green
-        winLabel.position = CGPoint(x: self.size.width/2, y: self.size.height/2 + 20)
-        winLabel.alpha = 0
-        winLabel.zPosition = 11
-        addChild(winLabel)
-        winLabel.run(fadeIn)
-        
-        let nextButton = SKSpriteNode(color: SKColor.blue, size: CGSize(width: 150, height: 50))
-        nextButton.name = "nextButton"
-        nextButton.position = CGPoint(x: self.size.width/2, y: self.size.height/2 - 50)
-        nextButton.alpha = 1
-        nextButton.zPosition = 11
-        addChild(nextButton)
-        nextButton.run(fadeIn)
-        self.nextButton = nextButton
-        
-        let buttonText = SKLabelNode(text: "Next")
-        buttonText.fontSize = 20
-        buttonText.fontColor = SKColor.white
-        buttonText.position = CGPoint.zero
-        buttonText.alpha = 0
-        buttonText.zPosition = 12
-        nextButton.addChild(buttonText)
-        buttonText.run(fadeIn)
-        HapticManager.shared.successFeedback()
-        completed[levelNumber] = true
-    }
-    
-    func showLoseScreen() {
-        isFinished = true
-        // Create and add the semi-transparent background
-        let background = createSemiTransparentBackground()
-        addChild(background)
-        
-        let fadeIn = SKAction.fadeAlpha(to: 1.0, duration: 0.5)
-        background.run(fadeIn)
-        
-        // Set up the "You Lose!" label with fade-in animation
-        let loseLabel = SKLabelNode(text: "You Lose!")
-        loseLabel.fontSize = 40
-        loseLabel.fontColor = SKColor.red
-        loseLabel.position = CGPoint(x: self.size.width/2, y: self.size.height/2 + 20)
-        loseLabel.alpha = 0  // Start invisible for the fade in animation
-        loseLabel.zPosition = 11
-        addChild(loseLabel)
-        loseLabel.run(fadeIn)
-        
-        // Set up the "Retry" button with fade-in animation
-        let retryButton = SKSpriteNode(color: SKColor.orange, size: CGSize(width: 150, height: 50))
-        retryButton.name = "retryButton"
-        retryButton.position = CGPoint(x: self.size.width/2, y: self.size.height/2 - 150)
-        retryButton.alpha = 1  // Start invisible for the fade in animation
-        retryButton.zPosition = 11
-        addChild(retryButton)
-        retryButton.run(fadeIn)
-        self.retryButton = retryButton
-        
-        // Add the text "Retry" to the button and run fade-in animation
-        let buttonText = SKLabelNode(text: "Retry")
-        buttonText.fontSize = 20
-        buttonText.fontColor = SKColor.white
-        buttonText.position = CGPoint.zero
-        buttonText.alpha = 0  // Start invisible for the fade in animation
-        buttonText.zPosition = 12
-        retryButton.addChild(buttonText)
-        buttonText.run(fadeIn)
-        HapticManager.shared.errorFeedback()
-        
-    }
-
     
     private func createBackButton() {
         backButton = SKSpriteNode(texture: SKTexture(imageNamed: "back"), size: CGSize(width: 50, height: 50))
@@ -354,18 +328,51 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     }
     
     private func createHitCount(target: Int) {
-        hitCountNode.position = CGPoint(x: frame.width, y: frame.height - 100)
+        let gradient = SKSpriteNode(texture: SKTexture(imageNamed: "gradients/sideYellow"))
+        gradient.size = CGSize(width: size.width / 2, height: 50)
+        gradient.anchorPoint = CGPoint(x: 1, y: 0.5)
+        gradient.position = CGPoint(x: size.width, y: frame.height - 135)
+        addChild(gradient)
+        
+        let label = SKLabelNode(text: "Hits:")
+        label.position = CGPoint(x: frame.width - 10, y: frame.height - 130)
+        label.fontColor = .white
+        label.horizontalAlignmentMode = .right
+        label.fontName = "HalvarBreit-Blk"
+        label.fontSize = 22
+        addChild(label)
+        
+        hitCountNode.position = CGPoint(x: frame.width - 10, y: frame.height - 150)
         hitCount = 0
         hitCountNode.fontColor = .white
         hitCountNode.horizontalAlignmentMode = .right
+        hitCountNode.fontName = "HalvarBreit-Blk"
+        hitCountNode.fontSize = 22
         addChild(hitCountNode)
     }
     
     private func createTimer(seconds: Int) {
-        timerNode.position = CGPoint(x: frame.width, y: frame.height - 50)
+        let gradient = SKSpriteNode(texture: SKTexture(imageNamed: "gradients/sideRed"))
+        gradient.size = CGSize(width: size.width / 2, height: 50)
+        gradient.anchorPoint = CGPoint(x: 1, y: 0.5)
+        gradient.position = CGPoint(x: size.width, y: frame.height - 85)
+        addChild(gradient)
+        
+        let label = SKLabelNode(text: "Time left:")
+        label.position = CGPoint(x: frame.width - 10, y: frame.height - 80)
+        label.fontColor = .white
+        label.horizontalAlignmentMode = .right
+        label.fontName = "HalvarBreit-Blk"
+        label.fontSize = 22
+        addChild(label)
+        
+        timerNode.position = CGPoint(x: frame.width - 10, y: frame.height - 110)
         timeLeft = seconds
         timerNode.fontColor = .white
         timerNode.horizontalAlignmentMode = .right
+        timerNode.numberOfLines = 2
+        timerNode.fontName = "HalvarBreit-Blk"
+        timerNode.fontSize = 22
         addChild(timerNode)
     }
     
@@ -379,9 +386,12 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         
         let startPosition = CGPoint(x: position.x - xOffset, y: position.y - yOffset)
         let endPosition = CGPoint(x: position.x + xOffset, y: position.y + yOffset)
-        
+        obstacle.path = UIBezierPath(roundedRect: CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height), cornerRadius: 10).cgPath
         obstacle.position = startPosition
+        obstacle.zPosition = -5
         obstacle.fillColor = .red
+        obstacle.strokeColor = UIColor(red: 0.7, green: 0, blue: 0, alpha: 1)
+        obstacle.lineWidth = 5
         obstacle.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 20, height: 50)).ideal().manualMovement()
         let sequence = SKAction.sequence([SKAction.move(to: endPosition, duration: 1), SKAction.move(to: startPosition, duration: 1)])
         let animation = SKAction.repeatForever(sequence)
@@ -392,9 +402,16 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     private func createBoostField(type: BoostType = .boost, at positionName: Position, size: CGSize) {
         let position = getPosition(positionName, size: size)
         let boost = SKShapeNode(rectOf: size)
+        boost.path = UIBezierPath(roundedRect: CGRect(x: -size.width / 2,
+                                                      y: -size.height / 2,
+                                                      width: size.width,
+                                                      height: size.height), cornerRadius: 20).cgPath
         boost.physicsBody = SKPhysicsBody(rectangleOf: size).ideal().manualMovement()
         boost.position = position
+        boost.zPosition = -5
+        boost.lineWidth = 5
         boost.strokeColor = .green
+        boost.fillColor = UIColor.green.withAlphaComponent(0.2)
         boost.physicsBody?.categoryBitMask = boostCategory
         boost.physicsBody?.contactTestBitMask = ballCategory
         boost.physicsBody?.collisionBitMask = 0
@@ -417,16 +434,26 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     }
     
     private func createPlayers() {
-        player1 = createPlayer(position: CGPoint(x: size.width / 2, y: size.width / 2))
-        player2 = createPlayer(position: CGPoint(x: size.width / 2, y: (size.height + size.width) / 2))
+        player1 = createPlayer(skin: activePlayerTexture,
+                               position: CGPoint(x: size.width / 2, y: size.width / 2),
+                               sizeMultiplier: 1/4)
+        player2 = createPlayer(skin: configuration?.platformTexture ?? .stick,
+                               position: CGPoint(x: size.width / 2, y: size.height - size.width / 2),
+                               sizeMultiplier: 1/4)
         player2.zRotation = .pi
     }
     
-    private func createPlayer(position: CGPoint) -> SKSpriteNode {
-        let imageName = configuration?.playerTexture.rawValue ?? "lens"
+    private func createPlayer(skin: PlatformTexture = .stick, position: CGPoint, sizeMultiplier: Double = 1/4) -> SKSpriteNode {
+        let imageName = skin.rawValue
         let player = SKSpriteNode(imageNamed: imageName)
-        player.size = CGSize(width: 100, height: 25)
+        let texture = SKTexture(imageNamed: imageName)
+        let aspectRatio = texture.size().height / texture.size().width
+        let width = size.width * sizeMultiplier
+        let height = width * aspectRatio
+        player.size = CGSize(width: width, height: height)
         player.position = position
+        player.zPosition = -5
+
         player.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: imageName),
                                            size: player.size).ideal().manualMovement()
         player.physicsBody?.categoryBitMask = playerCategory
@@ -476,20 +503,20 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
                                 (configuration?.goalTarget ?? 0 <= score.0 && score.0 > score.1)
         
         if isTimeFinished {
-            if didHitTarget {
+            if didHitTarget && !isFinished {
+                ball.removeFromParent()
+                isFinished = true
                 if didReachScoreGoal {
-                    showWinScreen()
+                    let coins = Int.random(in: 50...200)
+                    storeSystem.earn(coins: coins)
+                    createFinishScreen(isWin: true, coinAmount: coins)
                 } else if configuration?.time != nil {
-                    showLoseScreen()
+                    createFinishScreen(isWin: false)
                 } else {
                     return
                 }
-//            } else {
-//                showLoseScreen()
             }
         }
-        
-        print("t:", isTimeFinished, ", h:", didHitTarget, ", g:", didReachScoreGoal)
     }
  
     
@@ -579,4 +606,8 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
                            y: player1.position.y + size.height / 2)
         }
     }
+}
+
+#Preview {
+    ContentView(isGame: .constant(true))
 }

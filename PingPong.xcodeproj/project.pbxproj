@@ -14,7 +14,7 @@
 		58045C822ABC8EC30004189E /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58045C812ABC8EC30004189E /* MainView.swift */; };
 		581462082ADD9BBD00A943EA /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581462072ADD9BBD00A943EA /* Position.swift */; };
 		5814620A2ADD9BD900A943EA /* BallTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581462092ADD9BD900A943EA /* BallTexture.swift */; };
-		5814620C2ADD9C0300A943EA /* PlayerTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5814620B2ADD9C0300A943EA /* PlayerTexture.swift */; };
+		5814620C2ADD9C0300A943EA /* PlatformTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5814620B2ADD9C0300A943EA /* PlatformTexture.swift */; };
 		5814620E2ADD9C2300A943EA /* BoostType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5814620D2ADD9C2300A943EA /* BoostType.swift */; };
 		581462102ADD9C6500A943EA /* ObstacleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5814620F2ADD9C6500A943EA /* ObstacleType.swift */; };
 		5850ED882ABC507300B53627 /* PingPongApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5850ED872ABC507300B53627 /* PingPongApp.swift */; };
@@ -30,11 +30,21 @@
 		589B29722AF0FA590020F211 /* StoreSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589B29712AF0FA580020F211 /* StoreSystem.swift */; };
 		589B29742AF101490020F211 /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589B29732AF101490020F211 /* StoreView.swift */; };
 		589B29782AF13A950020F211 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589B29772AF13A950020F211 /* ArrayExtension.swift */; };
-		589B297A2AF13AB40020F211 /* BallSkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589B29792AF13AB40020F211 /* BallSkin.swift */; };
+		589B297A2AF13AB40020F211 /* Skin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589B29792AF13AB40020F211 /* Skin.swift */; };
 		58F53EEE2AD02D9C00F12D7B /* LevelConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F53EED2AD02D9C00F12D7B /* LevelConfig.swift */; };
 		58F53EF12AD02E0F00F12D7B /* GameConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F53EF02AD02E0F00F12D7B /* GameConfiguration.swift */; };
 		58F53EF42AD02E4F00F12D7B /* ContactType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F53EF32AD02E4F00F12D7B /* ContactType.swift */; };
 		58F53EF62AD02E8900F12D7B /* BitMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F53EF52AD02E8900F12D7B /* BitMask.swift */; };
+		84201C042AFA43C800F1DA3C /* SkinStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84201C032AFA43C800F1DA3C /* SkinStoreView.swift */; };
+		84BD8F5E2AF3B83C00BFDCBC /* Purchasable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BD8F5D2AF3B83C00BFDCBC /* Purchasable.swift */; };
+		84BD8F602AF5003700BFDCBC /* FinishScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BD8F5F2AF5003700BFDCBC /* FinishScene.swift */; };
+		84BD8F632AF50A3200BFDCBC /* HalvarBreit-Blk.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84BD8F622AF50A3200BFDCBC /* HalvarBreit-Blk.ttf */; };
+		84BD8F662AF52EB300BFDCBC /* StrokeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BD8F652AF52EB300BFDCBC /* StrokeText.swift */; };
+		84BD8F682AF53B2700BFDCBC /* BackgroundTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BD8F672AF53B2700BFDCBC /* BackgroundTexture.swift */; };
+		84BD8F6A2AF5447200BFDCBC /* PlatformStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BD8F692AF5447200BFDCBC /* PlatformStoreView.swift */; };
+		84F2E4DE2AF26653004BEEB1 /* SkinCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2E4DD2AF26653004BEEB1 /* SkinCodable.swift */; };
+		84F2E4E42AF26A90004BEEB1 /* BallStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2E4E32AF26A90004BEEB1 /* BallStoreView.swift */; };
+		84F2E4E62AF288A8004BEEB1 /* BackgroundStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84F2E4E52AF288A8004BEEB1 /* BackgroundStoreView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,7 +55,7 @@
 		58045C812ABC8EC30004189E /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		581462072ADD9BBD00A943EA /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		581462092ADD9BD900A943EA /* BallTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallTexture.swift; sourceTree = "<group>"; };
-		5814620B2ADD9C0300A943EA /* PlayerTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerTexture.swift; sourceTree = "<group>"; };
+		5814620B2ADD9C0300A943EA /* PlatformTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformTexture.swift; sourceTree = "<group>"; };
 		5814620D2ADD9C2300A943EA /* BoostType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostType.swift; sourceTree = "<group>"; };
 		5814620F2ADD9C6500A943EA /* ObstacleType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObstacleType.swift; sourceTree = "<group>"; };
 		5850ED842ABC507300B53627 /* PingPong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PingPong.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,11 +72,22 @@
 		589B29712AF0FA580020F211 /* StoreSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreSystem.swift; sourceTree = "<group>"; };
 		589B29732AF101490020F211 /* StoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreView.swift; sourceTree = "<group>"; };
 		589B29772AF13A950020F211 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
-		589B29792AF13AB40020F211 /* BallSkin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallSkin.swift; sourceTree = "<group>"; };
+		589B29792AF13AB40020F211 /* Skin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skin.swift; sourceTree = "<group>"; };
 		58F53EED2AD02D9C00F12D7B /* LevelConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelConfig.swift; sourceTree = "<group>"; };
 		58F53EF02AD02E0F00F12D7B /* GameConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfiguration.swift; sourceTree = "<group>"; };
 		58F53EF32AD02E4F00F12D7B /* ContactType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactType.swift; sourceTree = "<group>"; };
 		58F53EF52AD02E8900F12D7B /* BitMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitMask.swift; sourceTree = "<group>"; };
+		84201C032AFA43C800F1DA3C /* SkinStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkinStoreView.swift; sourceTree = "<group>"; };
+		84BD8F5D2AF3B83C00BFDCBC /* Purchasable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchasable.swift; sourceTree = "<group>"; };
+		84BD8F5F2AF5003700BFDCBC /* FinishScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishScene.swift; sourceTree = "<group>"; };
+		84BD8F622AF50A3200BFDCBC /* HalvarBreit-Blk.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HalvarBreit-Blk.ttf"; sourceTree = "<group>"; };
+		84BD8F642AF50A8300BFDCBC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		84BD8F652AF52EB300BFDCBC /* StrokeText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeText.swift; sourceTree = "<group>"; };
+		84BD8F672AF53B2700BFDCBC /* BackgroundTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTexture.swift; sourceTree = "<group>"; };
+		84BD8F692AF5447200BFDCBC /* PlatformStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformStoreView.swift; sourceTree = "<group>"; };
+		84F2E4DD2AF26653004BEEB1 /* SkinCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkinCodable.swift; sourceTree = "<group>"; };
+		84F2E4E32AF26A90004BEEB1 /* BallStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallStoreView.swift; sourceTree = "<group>"; };
+		84F2E4E52AF288A8004BEEB1 /* BackgroundStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundStoreView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +117,10 @@
 				58000E9F2AE92794008621E3 /* LevelsView.swift */,
 				58000EA12AE928EC008621E3 /* SettingsView.swift */,
 				589B29732AF101490020F211 /* StoreView.swift */,
+				84F2E4E32AF26A90004BEEB1 /* BallStoreView.swift */,
+				84F2E4E52AF288A8004BEEB1 /* BackgroundStoreView.swift */,
+				84BD8F692AF5447200BFDCBC /* PlatformStoreView.swift */,
+				84201C032AFA43C800F1DA3C /* SkinStoreView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -119,6 +144,9 @@
 		5850ED862ABC507300B53627 /* PingPong */ = {
 			isa = PBXGroup;
 			children = (
+				84BD8F642AF50A8300BFDCBC /* Info.plist */,
+				84BD8F612AF50A2000BFDCBC /* Fonts */,
+				84F2E4DC2AF2663A004BEEB1 /* Protocols */,
 				58000EA72AEFA177008621E3 /* View Model */,
 				58F53EF22AD02E4300F12D7B /* Enums */,
 				58F53EEF2AD02E0000F12D7B /* Model */,
@@ -128,8 +156,10 @@
 				5850ED8B2ABC507500B53627 /* Assets.xcassets */,
 				5850ED8D2ABC507500B53627 /* Preview Content */,
 				5865BAFD2ABC6F3600B76776 /* GameScene.swift */,
+				84BD8F5F2AF5003700BFDCBC /* FinishScene.swift */,
 				58000E9D2AE7FD2C008621E3 /* HapticManager.swift */,
 				589B29712AF0FA580020F211 /* StoreSystem.swift */,
+				84BD8F652AF52EB300BFDCBC /* StrokeText.swift */,
 			);
 			path = PingPong;
 			sourceTree = "<group>";
@@ -160,7 +190,7 @@
 			children = (
 				58F53EF02AD02E0F00F12D7B /* GameConfiguration.swift */,
 				58F53EED2AD02D9C00F12D7B /* LevelConfig.swift */,
-				589B29792AF13AB40020F211 /* BallSkin.swift */,
+				589B29792AF13AB40020F211 /* Skin.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -172,11 +202,29 @@
 				58F53EF52AD02E8900F12D7B /* BitMask.swift */,
 				581462072ADD9BBD00A943EA /* Position.swift */,
 				581462092ADD9BD900A943EA /* BallTexture.swift */,
-				5814620B2ADD9C0300A943EA /* PlayerTexture.swift */,
+				5814620B2ADD9C0300A943EA /* PlatformTexture.swift */,
 				5814620D2ADD9C2300A943EA /* BoostType.swift */,
 				5814620F2ADD9C6500A943EA /* ObstacleType.swift */,
+				84BD8F672AF53B2700BFDCBC /* BackgroundTexture.swift */,
 			);
 			path = Enums;
+			sourceTree = "<group>";
+		};
+		84BD8F612AF50A2000BFDCBC /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				84BD8F622AF50A3200BFDCBC /* HalvarBreit-Blk.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		84F2E4DC2AF2663A004BEEB1 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				84F2E4DD2AF26653004BEEB1 /* SkinCodable.swift */,
+				84BD8F5D2AF3B83C00BFDCBC /* Purchasable.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,6 +285,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84BD8F632AF50A3200BFDCBC /* HalvarBreit-Blk.ttf in Resources */,
 				5850ED8F2ABC507500B53627 /* Preview Assets.xcassets in Resources */,
 				5850ED8C2ABC507500B53627 /* Assets.xcassets in Resources */,
 			);
@@ -250,18 +299,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				589B29782AF13A950020F211 /* ArrayExtension.swift in Sources */,
+				84BD8F6A2AF5447200BFDCBC /* PlatformStoreView.swift in Sources */,
 				5850ED8A2ABC507300B53627 /* ContentView.swift in Sources */,
 				581462102ADD9C6500A943EA /* ObstacleType.swift in Sources */,
-				589B297A2AF13AB40020F211 /* BallSkin.swift in Sources */,
+				589B297A2AF13AB40020F211 /* Skin.swift in Sources */,
 				5865BAFC2ABC6D8200B76776 /* SKPhysicsBodyExtension.swift in Sources */,
 				5862A2162ACD7208005A9720 /* CGVectorExtensions.swift in Sources */,
 				58000EAB2AEFA4A4008621E3 /* DictionaryExtension.swift in Sources */,
+				84201C042AFA43C800F1DA3C /* SkinStoreView.swift in Sources */,
 				5814620E2ADD9C2300A943EA /* BoostType.swift in Sources */,
+				84BD8F662AF52EB300BFDCBC /* StrokeText.swift in Sources */,
+				84BD8F5E2AF3B83C00BFDCBC /* Purchasable.swift in Sources */,
 				58000EA22AE928EC008621E3 /* SettingsView.swift in Sources */,
 				585E20412AEFBFF30045B021 /* LevelsViewModel.swift in Sources */,
 				58F53EF62AD02E8900F12D7B /* BitMask.swift in Sources */,
+				84F2E4E42AF26A90004BEEB1 /* BallStoreView.swift in Sources */,
+				84BD8F682AF53B2700BFDCBC /* BackgroundTexture.swift in Sources */,
 				5865BAFE2ABC6F3600B76776 /* GameScene.swift in Sources */,
 				589B29742AF101490020F211 /* StoreView.swift in Sources */,
+				84BD8F602AF5003700BFDCBC /* FinishScene.swift in Sources */,
 				58045C822ABC8EC30004189E /* MainView.swift in Sources */,
 				5814620A2ADD9BD900A943EA /* BallTexture.swift in Sources */,
 				58F53EEE2AD02D9C00F12D7B /* LevelConfig.swift in Sources */,
@@ -269,8 +325,10 @@
 				581462082ADD9BBD00A943EA /* Position.swift in Sources */,
 				589B29722AF0FA590020F211 /* StoreSystem.swift in Sources */,
 				5862A2172ACD7208005A9720 /* CGExtensions.swift in Sources */,
-				5814620C2ADD9C0300A943EA /* PlayerTexture.swift in Sources */,
+				5814620C2ADD9C0300A943EA /* PlatformTexture.swift in Sources */,
 				58F53EF42AD02E4F00F12D7B /* ContactType.swift in Sources */,
+				84F2E4E62AF288A8004BEEB1 /* BackgroundStoreView.swift in Sources */,
+				84F2E4DE2AF26653004BEEB1 /* SkinCodable.swift in Sources */,
 				5862A2182ACD7208005A9720 /* CGPointExtensions.swift in Sources */,
 				58F53EF12AD02E0F00F12D7B /* GameConfiguration.swift in Sources */,
 				58000E9E2AE7FD2C008621E3 /* HapticManager.swift in Sources */,
@@ -331,7 +389,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -385,7 +443,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -403,9 +461,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PingPong/Preview Content\"";
-				DEVELOPMENT_TEAM = LJT5NUTV34;
+				DEVELOPMENT_TEAM = L6QNYLXV8A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PingPong/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -432,9 +491,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PingPong/Preview Content\"";
-				DEVELOPMENT_TEAM = LJT5NUTV34;
+				DEVELOPMENT_TEAM = L6QNYLXV8A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PingPong/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

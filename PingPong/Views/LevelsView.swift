@@ -8,34 +8,24 @@
 import SwiftUI
 
 struct LevelsView: View {
-    @State var isGame = false
+    @State var isGame: Bool = false
     @AppStorage("current level") var currentLevel = 0
-    @State var isFreePlayMode: Bool = false
+    @State var isFreePlay: Bool = false
     @AppStorage("completed") var completed: [Int: Bool] = [:]
-    
-    init(isGame: Bool = false, isFreePlay: Bool = false) {
-        self.isGame = isGame
-        self.isFreePlayMode = isFreePlay
-        if completed.isEmpty {
-            for i in 0..<LevelConfig.levels.count {
-                completed[i] = false
-            }
-        }
-    }
     
     var body: some View {
         ZStack {
             let screenSize = CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
             let gameScene = GameScene(size: screenSize,
                                       levelNumber: currentLevel,
-                                      isFreePlayMode: isFreePlayMode) {
+                                      isFreePlayMode: isFreePlay) {
                 self.isGame = false
             }
             if isGame {
                 ContentView(gameScene: gameScene, isGame: $isGame)
             } else {
                 VStack {
-                    Picker("Appearance", selection: $isFreePlayMode) {
+                    Picker("Appearance", selection: $isFreePlay) {
                         ForEach([false, true], id: \.self) {
                             Text($0 ? "Freeplay" : "Classic")
                         }
@@ -55,16 +45,26 @@ struct LevelsView: View {
                             }
                             .buttonStyle(.borderedProminent)
                             .padding(.horizontal)
-                            .disabled(isFreePlayMode && completed[index] == false)
+                            .disabled(isFreePlay && completed[index] == false)
                         }
                     } //SCROLLVIEW
                 } //VSTACK
+                .onAppear {
+                    if completed.isEmpty {
+                        for i in 0..<LevelConfig.levels.count {
+                            completed[i] = false
+                        }
+                    }
+                }
             }
         } //ZSTACK
         .navigationTitle("Levels")
+        .onAppear {
+            print("OnAppear:", self.isGame)
+        }
     }
 }
 
 #Preview {
-    LevelsView()
+    LevelsView(isGame: true, isFreePlay: false)
 }

@@ -11,21 +11,23 @@ import SpriteKit
 struct ContentView: View {
     @ObservedObject var gameScene: GameScene = GameScene(size: CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height), levelNumber: 0)
     @Binding var isGame: Bool
+    @AppStorage("activeBackgroundTexture") var activeBackgroundTexture = BackgroundTexture.wood
+    
     var scene: SKScene  {
         let scene = gameScene
         scene.scaleMode = .aspectFit
-        scene.backgroundColor = .black
+        scene.backgroundColor = .clear
         return scene
     }
     
     var body: some View {
         ZStack {
             Color.black
-                .ignoresSafeArea()
             SpriteView(scene: scene)
         } //ZSTACK
         .navigationBarBackButtonHidden()
         .toolbar(.hidden, for: .navigationBar)
+        .ignoresSafeArea()
     }
 }
 
