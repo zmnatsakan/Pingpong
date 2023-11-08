@@ -16,6 +16,8 @@ extension GameScene {
         createLevelLabel()
         
         if isWin {
+            levelNumber += 1
+            completed[levelNumber] = true
             createNextButton()
             createInfo(coinAmount: coinAmount)
         } else {

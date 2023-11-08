@@ -12,10 +12,13 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     // MARK: - Persisted Properties
     
     @AppStorage("completed") var completed: [Int: Bool] = [:]
-    @AppStorage("current level") var levelNumber = 0
+    @AppStorage("currentLevel") var levelNumber = 0
     @AppStorage("activeBallTexture") var activeBallTexture = BallTexture.apple
     @AppStorage("activeBackgroundTexture") var activeBackgroundTexture = BackgroundTexture.blue
     @AppStorage("activePlatformTexture") var activePlayerTexture = PlatformTexture.stick
+    
+    
+    @EnvironmentObject var observer: RoutesObserver
     
     // MARK: - Private Properties
     
@@ -104,7 +107,6 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
         let positionInScene = touch.location(in: self)
         let touchedNode = self.atPoint(positionInScene)
         if touchedNode.name == "next" {
-            levelNumber += 1
             reloadScene()
         } else if touchedNode.name == "restart" {
             reloadScene()
@@ -305,7 +307,7 @@ final class GameScene: SKScene, ObservableObject, SKPhysicsContactDelegate {
     }
     
     private func createBackButton() {
-        backButton = SKSpriteNode(texture: SKTexture(imageNamed: "back"), size: CGSize(width: 50, height: 50))
+        backButton = SKSpriteNode(texture: SKTexture(imageNamed: "buttons/navigation/home"), size: CGSize(width: 50, height: 50))
         backButton.position = CGPoint(x: 60, y: size.height - 60)
         addChild(backButton)
     }

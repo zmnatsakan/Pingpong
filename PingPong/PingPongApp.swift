@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct PingPongApp: App {
+    @ObservedObject var observer = RoutesObserver()
     var body: some Scene {
         WindowGroup {
-            MainView()
+            MainView().environmentObject(observer)
         }
     }
 }

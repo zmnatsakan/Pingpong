@@ -31,9 +31,6 @@ struct StoreView: View {
     
     private func test() -> some View{
         VStack {
-            Text("Coins: \(storeSystem.storedCoins)")
-                .font(.title)
-            
             HStack {
                 Button("earn 10") {
                     storeSystem.earn(coins: 10)
@@ -60,7 +57,14 @@ struct StoreView: View {
         ZStack {
             Color(red: 0.1, green: 0.14, blue: 0.18)
                 .ignoresSafeArea()
-            VStack {
+            VStack(spacing: 0) {
+                HStack {
+                    ScreenTitle(title: "Store", fontSize: 30)
+                    Spacer()
+                    CoinLabel()
+                        .padding(.horizontal, 20)
+                }
+                .padding(.vertical, 20)
                 ScrollView {
                     VStack {
                         BallStoreView(storeSystem: storeSystem)
@@ -70,8 +74,8 @@ struct StoreView: View {
                         BackgroundStoreView(storeSystem: storeSystem)
                     }
                 }
-                test()
-            }
+            } // VSTACK
+            .navigationBarBackButtonHidden()
         }
     }
 }
