@@ -12,32 +12,40 @@ struct StartView: View {
     @State var transitionProgress = 0.2
     
     var body: some View {
+        HStack {
+            ScreenTitle(title: "Store", fontSize: 30)
+            Spacer()
+            CoinLabel()
+                .padding(.horizontal, 20)
+        }
         ZStack {
             Group {
-                Color(red: 0.1, green: 0.14, blue: 0.18)
+                Color.background
                 Image("menuBG")
                     .resizable()
                     .scaledToFill()
             }
             .ignoresSafeArea()
-            
-            Image("logo")
-                .resizable()
-                .scaledToFit()
-                .background {
-                    Image("circles")
-                        .resizable()
-                        .frame(width: 800, height: 800)
-                        .scaleEffect(transitionProgress)
-                        .opacity(transitionProgress)
-                        .onAppear {
-                            DispatchQueue.main.async {
-                                withAnimation(.easeInOut(duration: 2)) {
-                                    transitionProgress = 1
+            VStack {
+                Image("logo")
+                    .resizable()
+                    .scaledToFit()
+                    .background {
+                        Image("circles")
+                            .resizable()
+                            .frame(width: 800, height: 800)
+                            .scaleEffect(transitionProgress)
+                            .opacity(transitionProgress)
+                            .onAppear {
+                                DispatchQueue.main.async {
+                                    withAnimation(.easeInOut(duration: 2)) {
+                                        transitionProgress = 1
+                                    }
                                 }
                             }
-                        }
-                }
+                    }
+                    .padding(.bottom, 140)
+            }
             
             VStack(spacing: 0) {
                 CoinLabel()
@@ -46,7 +54,9 @@ struct StartView: View {
                 Spacer()
                 VStack {
                     Button(action: {
-                        observer.currentRoute = .gameView
+                        withAnimation {
+                            observer.currentRoute = .gameView
+                        }
                     }, label: {
                         Image("buttons/play")
                             .resizable()
@@ -54,7 +64,9 @@ struct StartView: View {
                     })
                     
                     Button(action: {
-                        observer.currentRoute = .levelView
+                        withAnimation {
+                            observer.currentRoute = .levelView
+                        }
                     }, label: {
                         Image("buttons/selectLevel")
                             .resizable()
@@ -62,7 +74,9 @@ struct StartView: View {
                     })
                     
                     Button(action: {
-                        observer.currentRoute = .storeView
+                        withAnimation {
+                            observer.currentRoute = .storeView
+                        }
                     }, label: {
                         Image("buttons/store")
                             .resizable()
@@ -70,7 +84,9 @@ struct StartView: View {
                     })
                     
                     Button(action: {
-                        observer.currentRoute = .settingsView
+                        withAnimation {
+                            observer.currentRoute = .settingsView
+                        }
                     }, label: {
                         Image("buttons/settings")
                             .resizable()
@@ -78,7 +94,7 @@ struct StartView: View {
                     })
                 } //VSTACK
                 .padding()
-                .padding(.bottom, 90)
+                .padding(.bottom, 130)
             } //VSTACK
         } //ZSTACK
     }

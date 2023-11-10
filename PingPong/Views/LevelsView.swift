@@ -37,7 +37,7 @@ struct LevelsView: View {
     
     var body: some View {
         ZStack(alignment: .topLeading) {
-            Color(red: 0.1, green: 0.14, blue: 0.18)
+            Color.background
                 .ignoresSafeArea()
             
             let screenSize = CGSize(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
@@ -63,7 +63,6 @@ struct LevelsView: View {
                                         GeometryReader { geometry in
                                             Button {
                                                 currentLevel = levelFor(row: row, column: column)
-                                                //                                                    isChoosingLevel.toggle()
                                                 isGame.toggle()
                                             } label: {
                                                 Text("\(levelFor(row: row, column: column) + 1)")
@@ -77,7 +76,7 @@ struct LevelsView: View {
                                                 Image(currentLevel == level ? "buttons/level/yellow" : completed[level] == true ? "buttons/level/green" : "buttons/level/red")
                                                     .resizable()
                                                     .overlay {
-                                                        if currentLevel != level && completed[level] != true {
+                                                        if currentLevel != level && completed[level] == false {
                                                             VStack {
                                                                 Spacer(minLength: 90)
                                                                 Image("icons/lock")
@@ -110,9 +109,14 @@ struct LevelsView: View {
                         }
                     }
                 } //VSTACK
-                .onAppear {
+                .onAppear {  
+                    StoreSystem().earn(coins: 23445)
+                    for i in 1..<LevelConfig.levels.count {
+                        completed[i] = true
+                    }
                     if completed.isEmpty {
-                        for i in 0..<LevelConfig.levels.count {
+                        completed[0] = true
+                        for i in 1..<LevelConfig.levels.count {
                             completed[i] = false
                         }
                     }
@@ -121,8 +125,8 @@ struct LevelsView: View {
                 ScreenTitle(title: "Select level")
                     .padding(.bottom, 20)
                     .background {
-                    Color(red: 0.1, green: 0.14, blue: 0.18)
-                        .ignoresSafeArea()
+                        Color.background
+                            .ignoresSafeArea()
                 }
             }
         } //ZSTACK

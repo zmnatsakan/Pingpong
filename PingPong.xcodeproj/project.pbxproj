@@ -41,6 +41,10 @@
 		8434FFDE2AFBC92D000C9ECD /* CoinLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434FFDD2AFBC92D000C9ECD /* CoinLabel.swift */; };
 		8434FFE02AFBD3C1000C9ECD /* UserDeafaultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434FFDF2AFBD3C1000C9ECD /* UserDeafaultsExtension.swift */; };
 		8434FFE22AFBD66F000C9ECD /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434FFE12AFBD66F000C9ECD /* StartView.swift */; };
+		8434FFE42AFCE6C3000C9ECD /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434FFE32AFCE6C3000C9ECD /* ColorExtension.swift */; };
+		8434FFE62AFD0F84000C9ECD /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434FFE52AFD0F84000C9ECD /* PrivacyPolicyView.swift */; };
+		8434FFE82AFD0F9A000C9ECD /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434FFE72AFD0F9A000C9ECD /* AboutView.swift */; };
+		8434FFEA2AFD1391000C9ECD /* BundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8434FFE92AFD1391000C9ECD /* BundleExtension.swift */; };
 		84BD8F5E2AF3B83C00BFDCBC /* Purchasable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BD8F5D2AF3B83C00BFDCBC /* Purchasable.swift */; };
 		84BD8F602AF5003700BFDCBC /* FinishScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BD8F5F2AF5003700BFDCBC /* FinishScene.swift */; };
 		84BD8F632AF50A3200BFDCBC /* HalvarBreit-Blk.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84BD8F622AF50A3200BFDCBC /* HalvarBreit-Blk.ttf */; };
@@ -88,6 +92,10 @@
 		8434FFDD2AFBC92D000C9ECD /* CoinLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinLabel.swift; sourceTree = "<group>"; };
 		8434FFDF2AFBD3C1000C9ECD /* UserDeafaultsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDeafaultsExtension.swift; sourceTree = "<group>"; };
 		8434FFE12AFBD66F000C9ECD /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
+		8434FFE32AFCE6C3000C9ECD /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		8434FFE52AFD0F84000C9ECD /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
+		8434FFE72AFD0F9A000C9ECD /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		8434FFE92AFD1391000C9ECD /* BundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtension.swift; sourceTree = "<group>"; };
 		84BD8F5D2AF3B83C00BFDCBC /* Purchasable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchasable.swift; sourceTree = "<group>"; };
 		84BD8F5F2AF5003700BFDCBC /* FinishScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishScene.swift; sourceTree = "<group>"; };
 		84BD8F622AF50A3200BFDCBC /* HalvarBreit-Blk.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "HalvarBreit-Blk.ttf"; sourceTree = "<group>"; };
@@ -134,6 +142,8 @@
 				8434FFDB2AFBC736000C9ECD /* ScreenTitle.swift */,
 				8434FFDD2AFBC92D000C9ECD /* CoinLabel.swift */,
 				8434FFE12AFBD66F000C9ECD /* StartView.swift */,
+				8434FFE52AFD0F84000C9ECD /* PrivacyPolicyView.swift */,
+				8434FFE72AFD0F9A000C9ECD /* AboutView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -196,6 +206,8 @@
 				58000EAA2AEFA4A4008621E3 /* DictionaryExtension.swift */,
 				589B29772AF13A950020F211 /* ArrayExtension.swift */,
 				8434FFDF2AFBD3C1000C9ECD /* UserDeafaultsExtension.swift */,
+				8434FFE32AFCE6C3000C9ECD /* ColorExtension.swift */,
+				8434FFE92AFD1391000C9ECD /* BundleExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -336,12 +348,14 @@
 				84BD8F5E2AF3B83C00BFDCBC /* Purchasable.swift in Sources */,
 				8434FFE22AFBD66F000C9ECD /* StartView.swift in Sources */,
 				8434FFDC2AFBC736000C9ECD /* ScreenTitle.swift in Sources */,
+				8434FFE62AFD0F84000C9ECD /* PrivacyPolicyView.swift in Sources */,
 				58000EA22AE928EC008621E3 /* SettingsView.swift in Sources */,
 				8434FFDA2AFBB744000C9ECD /* NavRoutes.swift in Sources */,
 				585E20412AEFBFF30045B021 /* LevelsViewModel.swift in Sources */,
 				58F53EF62AD02E8900F12D7B /* BitMask.swift in Sources */,
 				84F2E4E42AF26A90004BEEB1 /* BallStoreView.swift in Sources */,
 				84BD8F682AF53B2700BFDCBC /* BackgroundTexture.swift in Sources */,
+				8434FFE42AFCE6C3000C9ECD /* ColorExtension.swift in Sources */,
 				5865BAFE2ABC6F3600B76776 /* GameScene.swift in Sources */,
 				589B29742AF101490020F211 /* StoreView.swift in Sources */,
 				84BD8F602AF5003700BFDCBC /* FinishScene.swift in Sources */,
@@ -356,11 +370,13 @@
 				58F53EF42AD02E4F00F12D7B /* ContactType.swift in Sources */,
 				84F2E4E62AF288A8004BEEB1 /* BackgroundStoreView.swift in Sources */,
 				84F2E4DE2AF26653004BEEB1 /* SkinCodable.swift in Sources */,
+				8434FFE82AFD0F9A000C9ECD /* AboutView.swift in Sources */,
 				5862A2182ACD7208005A9720 /* CGPointExtensions.swift in Sources */,
 				58F53EF12AD02E0F00F12D7B /* GameConfiguration.swift in Sources */,
 				8434FFDE2AFBC92D000C9ECD /* CoinLabel.swift in Sources */,
 				58000E9E2AE7FD2C008621E3 /* HapticManager.swift in Sources */,
 				5850ED882ABC507300B53627 /* PingPongApp.swift in Sources */,
+				8434FFEA2AFD1391000C9ECD /* BundleExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,6 +509,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PingPong/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PingPong;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -523,6 +540,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PingPong/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PingPong;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

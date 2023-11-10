@@ -55,7 +55,7 @@ struct StoreView: View {
     
     var body: some View {
         ZStack {
-            Color(red: 0.1, green: 0.14, blue: 0.18)
+            Color.background
                 .ignoresSafeArea()
             VStack(spacing: 0) {
                 HStack {
